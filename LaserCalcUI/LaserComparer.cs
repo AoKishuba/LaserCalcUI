@@ -9,7 +9,7 @@ namespace LaserCalcUI
     public struct LaserConfiguration
     {
         public int[] ComponentCounts;
-        public float DesiredAP;
+        public int DoublerCount;
         public bool UsesQSwitch;
     }
 
@@ -23,25 +23,91 @@ namespace LaserCalcUI
         /// <summary>
         /// Generates and compares all possible laser configurations
         /// </summary>
-        /// <param name="maxComponentCount">Max number of laser components; also known as stack length</param>
-        /// <param name="targetAC">Base AC of target</param>
+        /// <param name="maxStackLength">Max number of laser components</param>
+        /// <param name="stackCount">Number of parallel cavity stacks</param>
+        /// <param name="inlineDoublers">Whether doublers will be mounted inline with stacks</param>
+        /// <param name="combinerCount">Number of combiners and LAMS nodes</param>
+        /// <param name="minRechargeTime">Minimum recharge time in seconds</param>
+        /// <param name="maxRechargeTime">Maximum recharge time in seconds</param>
+        /// <param name="targetAC">Target base AC</param>
+        /// <param name="ringACBonus">AC bonus from ring shields</param>
         /// <param name="smokeStrength">Smoke strength, in smoke units (25 000 per max-strength dispenser)</param>
+        /// <param name="planarShieldStrength">Smoke strength equivalent of planar shields</param>
+        /// <param name="enginePpm">Engine Power Per Material</param>
+        /// <param name="enginePpv">Engine Power Per Volume</param>
+        /// <param name="enginePpc">Engine Power Per Cost (block cost of engine)</param>
+        /// <param name="requiresFuelAccess">Whether fuel access blocks are required (for Fuel Engines or CJE)</param>
+        /// <param name="storagePerCost">Quantity of material stored per cost of storage</param>
+        /// <param name="storagePerVolume">Quantity of material stored per volume of storage</param>
         /// <param name="variableToCompare">Whether to test for DPS per Volume or DPS per Cost</param>
-        public LaserComparer(int maxComponentCount, float targetAC, int smokeStrength, TestType variableToCompare)
+        /// <param name="testInterval">Test interval in minutes</param>
+        public LaserComparer(
+            int maxStackLength,
+            int stackCount,
+            bool inlineDoublers,
+            int combinerCount,
+            int minRechargeTime,
+            int maxRechargeTime,
+            float targetAC,
+            float ringACBonus,
+            int smokeStrength,
+            int planarShieldStrength,
+            float enginePpm,
+            float enginePpv,
+            float enginePpc,
+            bool requiresFuelAccess,
+            float storagePerCost,
+            float storagePerVolume,
+            TestType variableToCompare,
+            int testInterval
+            )
         {
-            MaxComponentCount = maxComponentCount;
+            MaxStackLength = maxStackLength;
+            StackCount = stackCount;
+            InlineDoublers = inlineDoublers;
+            CombinerCount = combinerCount;
+            MinRechargeTime = minRechargeTime;
+            MaxRechargeTime = maxRechargeTime;
             TargetAC = targetAC;
+            RingACBonus = ringACBonus;
+            EffectiveAC = TargetAC + RingACBonus;
             SmokeStrength = smokeStrength;
+            PlanarShieldStrength = planarShieldStrength;
+            SmokeAPMultiplier = MathF.Min(1, 3f / MathF.Pow(SmokeStrength + PlanarShieldStrength, (float)1 / 3));
+            EnginePpm = enginePpm;
+            EnginePpv = enginePpv;
+            EnginePpc = enginePpc;
+            RequiresFuelAccess = requiresFuelAccess;
+            StoragePerCost = storagePerCost;
+            StoragePerVolume = storagePerVolume;
             VariableToCompare = variableToCompare;
+            TestInterval = testInterval;
         }
 
-        int MaxComponentCount { get; }
+        int MaxStackLength { get; }
+        int StackCount { get; }
+        bool InlineDoublers { get; }
+        int CombinerCount { get; }
+        int MinRechargeTime { get; }
+        int MaxRechargeTime { get; }
         float TargetAC { get; }
+        float RingACBonus { get; }
+        float EffectiveAC { get; }
         int SmokeStrength { get; }
+        int PlanarShieldStrength { get; }
+        float SmokeAPMultiplier { get; }
+        float EnginePpm { get; }
+        float EnginePpv { get; }
+        float EnginePpc { get; }
+        bool RequiresFuelAccess { get; }
+        float StoragePerCost { get; }
+        float StoragePerVolume { get; }
         TestType VariableToCompare { get; }
+        int TestInterval { get; }
 
-        float EffectiveAC { get; set; }
-        Laser TopLaser { get; set; }
+        static int[] TopLaserDefaultComponents = new int[] { 0 };
+        Laser TopLaser = new(
+            TopLaserDefaultComponents, 0, false, 0, 0, false, 0, 0, 0, 0, 0, false, 0, 0, 0);
         ConcurrentBag<Laser> LaserBag = new();
 
         /// <summary>
@@ -49,54 +115,57 @@ namespace LaserCalcUI
         /// for both Q and non-Q lasers
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<LaserConfiguration> GenerateLaserConfigurations()
+        IEnumerable<LaserConfiguration> GenerateLaserConfigurations()
         {
             int totalCount;
             bool[] boolArr = new[] { true, false };
 
-            for (int comp0Count = 0; comp0Count <= MaxComponentCount; comp0Count++)
+            for (int comp0Count = 0; comp0Count <= MaxStackLength; comp0Count++)
             {
                 totalCount = comp0Count;
 
-                for (int comp1Count = 0; comp1Count <= MaxComponentCount - totalCount; comp1Count++)
+                for (int comp1Count = 0; comp1Count <= MaxStackLength - totalCount; comp1Count++)
                 {
                     totalCount = comp0Count + comp1Count;
 
-                    for (int comp2Count = 0; comp2Count <= MaxComponentCount - totalCount; comp2Count++)
+                    for (int comp2Count = 0; comp2Count <= MaxStackLength - totalCount; comp2Count++)
                     {
                         totalCount = comp0Count + comp1Count + comp2Count;
 
-                        for (int comp3Count = 0; comp3Count <= MaxComponentCount - totalCount; comp3Count++)
+                        for (int comp3Count = 0; comp3Count <= MaxStackLength - totalCount; comp3Count++)
                         {
                             totalCount = comp0Count + comp1Count + comp2Count + comp3Count;
 
-                            for (int comp4Count = 0; comp4Count <= MaxComponentCount - totalCount; comp4Count++)
+                            for (int comp4Count = 0; comp4Count <= MaxStackLength - totalCount; comp4Count++)
                             {
                                 totalCount = comp0Count + comp1Count + comp2Count + comp3Count + comp4Count;
 
-                                for (int comp5Count = 0; comp5Count <= MaxComponentCount - totalCount; comp5Count++)
+                                for (int comp5Count = 0; comp5Count <= MaxStackLength - totalCount; comp5Count++)
                                 {
-                                    totalCount = comp0Count + comp1Count + comp2Count + comp3Count + comp4Count + comp5Count;
+                                    int maxDoublerCount;
+                                    maxDoublerCount = InlineDoublers
+                                        ? MaxStackLength - comp0Count - comp1Count - comp2Count - comp3Count - comp4Count - comp5Count
+                                        : MaxStackLength;
 
-                                    for (float desiredAP = 40f; desiredAP <= EffectiveAC; desiredAP += 0.1f)
+                                    for (int doublerCount = 0; doublerCount <= maxDoublerCount; doublerCount++)
                                     {
                                         foreach (bool qSwitch in boolArr)
                                         {
                                             int[] componentCounts = new[]
                                             {
-                                                        comp0Count,
-                                                        comp1Count,
-                                                        comp2Count,
-                                                        comp3Count,
-                                                        comp4Count,
-                                                        comp5Count,
-                                                    };
+                                                comp0Count,
+                                                comp1Count,
+                                                comp2Count,
+                                                comp3Count,
+                                                comp4Count,
+                                                comp5Count
+                                            };
 
                                             yield return new LaserConfiguration
                                             {
                                                 ComponentCounts = componentCounts,
-                                                DesiredAP = desiredAP,
-                                                UsesQSwitch = qSwitch,
+                                                DoublerCount = doublerCount,
+                                                UsesQSwitch = qSwitch
                                             };
                                         }
                                     }
@@ -114,10 +183,25 @@ namespace LaserCalcUI
         public void LaserTest()
         {
             //Test all possible configurations
-            EffectiveAC = MathF.Max(TargetAC, TargetAC / 3 * MathF.Pow(SmokeStrength, 1 / 3f));
             Parallel.ForEach(GenerateLaserConfigurations(), laserConfig =>
             {
-                Laser laserUnderTesting = new(laserConfig.ComponentCounts, laserConfig.UsesQSwitch, laserConfig.DesiredAP, EffectiveAC);
+                Laser laserUnderTesting = new(
+                    laserConfig.ComponentCounts,
+                    laserConfig.DoublerCount,
+                    InlineDoublers,
+                    StackCount,
+                    CombinerCount,
+                    laserConfig.UsesQSwitch,
+                    EffectiveAC,
+                    SmokeAPMultiplier,
+                    EnginePpm,
+                    EnginePpv,
+                    EnginePpc,
+                    RequiresFuelAccess,
+                    StoragePerCost,
+                    StoragePerVolume,
+                    TestInterval
+                    );
                 laserUnderTesting.CalculateLaserStats();
                 LaserBag.Add(laserUnderTesting);
             });
@@ -128,7 +212,9 @@ namespace LaserCalcUI
                 foreach (Laser rawLaser in LaserBag)
                 {
                     if (rawLaser.DpsPerVolume > TopLaser.DpsPerVolume
-                        || (rawLaser.DpsPerVolume == TopLaser.DpsPerVolume && rawLaser.DpsPerCost > TopLaser.DpsPerCost))
+                        || (rawLaser.DpsPerVolume == TopLaser.DpsPerVolume && rawLaser.DpsPerCost > TopLaser.DpsPerCost)
+                        && rawLaser.RechargeTime >= MinRechargeTime
+                        && rawLaser.RechargeTime <= MaxRechargeTime)
                     {
                         TopLaser = rawLaser;
                     }
@@ -139,7 +225,9 @@ namespace LaserCalcUI
                 foreach (Laser rawLaser in LaserBag)
                 {
                     if (rawLaser.DpsPerCost > TopLaser.DpsPerCost
-                        || (rawLaser.DpsPerCost == TopLaser.DpsPerCost && rawLaser.DpsPerVolume > TopLaser.DpsPerVolume))
+                        || (rawLaser.DpsPerCost == TopLaser.DpsPerCost && rawLaser.DpsPerVolume > TopLaser.DpsPerVolume)
+                        && rawLaser.RechargeTime >= MinRechargeTime
+                        && rawLaser.RechargeTime <= MaxRechargeTime)
                     {
                         TopLaser = rawLaser;
                     }
@@ -153,45 +241,48 @@ namespace LaserCalcUI
             FileStream fs = (FileStream)writer.BaseStream;
 
             writer.WriteLine("Test Parameters");
-            writer.WriteLine("Max component count: " + MaxComponentCount);
-            writer.WriteLine("Target AC: " + TargetAC);
+            writer.WriteLine("Max stack length: " + MaxStackLength);
+            writer.WriteLine("Stack count: " + StackCount);
+            if (InlineDoublers)
+            {
+                writer.WriteLine("Doublers inline with stacks");
+            }
+            else
+            {
+                writer.WriteLine("Doublers separate from stacks");
+            }
+            writer.WriteLine("Min recharge time (sec): " + MinRechargeTime);
+            writer.WriteLine("Max recharge time (sec): " + MaxRechargeTime);
+            writer.WriteLine("Target base AC: " + TargetAC);
+            writer.WriteLine("AC bonus from ring shields: " + RingACBonus);
+            writer.WriteLine("Target eff. AC: " + EffectiveAC);
             writer.WriteLine("Smoke strength: " + SmokeStrength);
-            writer.WriteLine("Target AC after smoke: " + EffectiveAC);
+            writer.WriteLine("Planar smoke equivalent: " + PlanarShieldStrength);
+            writer.WriteLine("Eff. smoke strength: " + (SmokeStrength + PlanarShieldStrength));
+            writer.WriteLine("Smoke reduces AP to " + (SmokeAPMultiplier * 100) + "%");
+            writer.WriteLine("Engine PPM: " + EnginePpm);
+            writer.WriteLine("Engine PPV: " + EnginePpv);
+            writer.WriteLine("Engine PPC: " + EnginePpc);
+            if(RequiresFuelAccess)
+            {
+                writer.WriteLine("Engine requires fuel access");
+            }
+            else
+            {
+                writer.WriteLine("Engine does NOT require fuel access");
+            }
             if (VariableToCompare == TestType.DpsPerVolume)
             {
-                writer.WriteLine("Testing for Dps per Volume");
+                writer.WriteLine("Testing for Dps per Volume " + TestInterval + " minutes.");
             }
             else if (VariableToCompare == TestType.DpsPerCost)
             {
-                writer.WriteLine("Testing for Dps per Cost");
+                writer.WriteLine("Testing for Dps per Cost over " + TestInterval + " minutes.");
             }
 
             writer.WriteLine("\nBest Laser Configuration\n");
 
-            for (int i = 0; i < TopLaser.ComponentCounts.Length; i++)
-            {
-                writer.WriteLine(LaserComponent.AllLaserComponents[i].Name + ": " + TopLaser.ComponentCounts[i]);
-            }
-
-            if (TopLaser.UsesQSwitch)
-            {
-                writer.WriteLine("1-4 Q switches");
-            }
-            else
-            {
-                writer.WriteLine("Laser does NOT use Q switches");
-            }
-
-            writer.WriteLine("Frequency doublers: " + TopLaser.DoublerCount);
-
-            writer.WriteLine("Block volume: " + TopLaser.BlockVolume);
-            writer.WriteLine("Cost: " + TopLaser.Cost);
-            writer.WriteLine("Engine power: " + TopLaser.EnginePower);
-            writer.WriteLine("Energy discharge/sec: " + TopLaser.DischargeRate);
-            writer.WriteLine("AP: " + TopLaser.AP);
-            writer.WriteLine("Applied damage per second: " + TopLaser.Dps);
-            writer.WriteLine("DPS per volume: " + TopLaser.DpsPerVolume);
-            writer.WriteLine("DPS per cost: " + TopLaser.DpsPerCost);
+            TopLaser.WriteLaserInfo(writer);
         }
     }
 }
