@@ -89,7 +89,7 @@ namespace LaserCalcUI
                 (int)TestIntervalUD.Value
                 );
 
-            comparer.LaserTest();
+            comparer.LaserTestCascade();
 
             RunTestsButton.Enabled = true;
         }

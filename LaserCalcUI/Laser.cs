@@ -57,7 +57,7 @@ namespace LaserCalcUI
             StoragePerVolume = storagePerVolume;
             TestInterval = testInterval;
         }
-        public int[] ComponentCounts { get; }
+        public int[] ComponentCounts { get; set; }
         public int DoublerCount { get; set; }
         public bool InlineDoublers { get; }
         public int StackCount { get; }
@@ -105,12 +105,12 @@ namespace LaserCalcUI
             CalculateEnergyStorage();
             CalculatePumpVolume();
             CalculateRechargeTime();
+            CalculateAPMod();
             CalculateDischargeRate();
             CalculateLaserCost();
             CalculateLaserVolume();
             CalculateEngineVolumeAndCost();
             CalculateFuelVolumeAndCost();
-            CalculateAPMod();
             CalculateDps();
         }
 
@@ -178,6 +178,7 @@ namespace LaserCalcUI
         /// </summary>
         void CalculateEnergyStorage()
         {
+            EnergyStorage = 0;
             for (int compIndex = 0; compIndex < ComponentCounts.Length; compIndex++)
             {
                 EnergyStorage += LaserComponent.AllLaserComponents[compIndex].EnergyStorage * ComponentCounts[compIndex];
@@ -191,6 +192,8 @@ namespace LaserCalcUI
         /// </summary>
         void CalculatePumpVolume()
         {
+            PumpVolume = 0;
+            RechargeRate = 0;
             for (int compIndex = 0; compIndex < ComponentCounts.Length; compIndex++)
             {
                 PumpVolume += LaserComponent.AllLaserComponents[compIndex].PumpVolume * ComponentCounts[compIndex];

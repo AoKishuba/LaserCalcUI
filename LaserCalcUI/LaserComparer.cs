@@ -284,5 +284,546 @@ namespace LaserCalcUI
 
             TopLaser.WriteLaserInfo(writer);
         }
+
+        /// <summary>
+        /// Find optimal component counts using cascading binary search
+        /// </summary>
+        public void LaserTestCascade()
+        {
+            int[] zeroArray = new int[LaserComponent.AllLaserComponents.Length];
+            List<Laser> laserList = new();
+
+            // Zero Q
+            Laser zeroQ = new(
+                zeroArray,
+                0,
+                InlineDoublers,
+                StackCount,
+                CombinerCount,
+                false,
+                EffectiveAC,
+                SmokeAPMultiplier,
+                EnginePpm,
+                EnginePpv,
+                EnginePpc,
+                RequiresFuelAccess,
+                StoragePerCost,
+                StoragePerVolume,
+                TestInterval
+                );
+
+            // 1-4 Q
+            Laser qSwitched = new(
+                zeroArray,
+                0,
+                InlineDoublers,
+                StackCount,
+                CombinerCount,
+                true,
+                EffectiveAC,
+                SmokeAPMultiplier,
+                EnginePpm,
+                EnginePpv,
+                EnginePpc,
+                RequiresFuelAccess,
+                StoragePerCost,
+                StoragePerVolume,
+                TestInterval
+                );
+
+            laserList.Add(zeroQ);
+            laserList.Add(qSwitched);
+
+            Parallel.ForEach(laserList, laserToTest =>
+            {
+                OptimizeComp0Count(laserToTest, MaxStackLength);
+            });
+
+
+            //Write results
+            string fileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss-ff") + ".txt";
+
+            using var writer = new StreamWriter(fileName, append: true);
+            FileStream fs = (FileStream)writer.BaseStream;
+
+            writer.WriteLine("Test Parameters");
+            writer.WriteLine("Max stack length: " + MaxStackLength);
+            writer.WriteLine("Stack count: " + StackCount);
+            if (InlineDoublers)
+            {
+                writer.WriteLine("Doublers inline with stacks");
+            }
+            else
+            {
+                writer.WriteLine("Doublers separate from stacks");
+            }
+            writer.WriteLine("Min recharge time (sec): " + MinRechargeTime);
+            writer.WriteLine("Max recharge time (sec): " + MaxRechargeTime);
+            writer.WriteLine("Target base AC: " + TargetAC);
+            writer.WriteLine("AC bonus from ring shields: " + RingACBonus);
+            writer.WriteLine("Target eff. AC: " + EffectiveAC);
+            writer.WriteLine("Smoke strength: " + SmokeStrength);
+            writer.WriteLine("Planar smoke equivalent: " + PlanarShieldStrength);
+            writer.WriteLine("Eff. smoke strength: " + (SmokeStrength + PlanarShieldStrength));
+            writer.WriteLine("Smoke reduces AP to " + (SmokeAPMultiplier * 100) + "%");
+            writer.WriteLine("Engine PPM: " + EnginePpm);
+            writer.WriteLine("Engine PPV: " + EnginePpv);
+            writer.WriteLine("Engine PPC: " + EnginePpc);
+            if (RequiresFuelAccess)
+            {
+                writer.WriteLine("Engine requires fuel access");
+            }
+            else
+            {
+                writer.WriteLine("Engine does NOT require fuel access");
+            }
+            if (VariableToCompare == TestType.DpsPerVolume)
+            {
+                writer.WriteLine("Testing for Dps per Volume " + TestInterval + " minutes.");
+            }
+            else if (VariableToCompare == TestType.DpsPerCost)
+            {
+                writer.WriteLine("Testing for Dps per Cost over " + TestInterval + " minutes.");
+            }
+
+            writer.WriteLine("\nBest Laser Configurations\n");
+
+            writer.WriteLine("Zero Q");
+            zeroQ.WriteLaserInfo(writer);
+
+            writer.WriteLine("\n1 thru 4 Q");
+            qSwitched.WriteLaserInfo(writer);
+        }
+
+        /// <summary>
+        /// Use binary search to calculate optimum frequency doubler count
+        /// </summary>
+        /// <param name="laserUnderTesting">Laser to optimize</param>
+        /// <param name="doublerUpperBound">Max allowed doublers (be sure to adjust for inline)</param>
+        void OptimizeDoublerCount(Laser laserUnderTesting, int doublerUpperBound)
+        {
+            int doublerLowerBound = 0;
+            int doublerMidPoint;
+            float doublerLowerScore;
+            float doublerUpperScore;
+            while (doublerUpperBound - doublerLowerBound > 1)
+            {
+                doublerMidPoint = (int)Math.Floor((decimal)(doublerLowerBound + doublerUpperBound) / 2);
+
+                laserUnderTesting.DoublerCount = doublerLowerBound;
+                laserUnderTesting.CalculateLaserStats();
+                doublerLowerScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                laserUnderTesting.DoublerCount = doublerUpperBound;
+                laserUnderTesting.CalculateLaserStats();
+                doublerUpperScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                if (doublerLowerScore >= doublerUpperScore)
+                {
+                    doublerUpperBound = doublerMidPoint;
+                }
+                else
+                {
+                    doublerLowerBound = doublerMidPoint;
+                }
+            }
+
+            laserUnderTesting.DoublerCount = doublerLowerBound;
+            laserUnderTesting.CalculateLaserStats();
+            doublerLowerScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.DoublerCount = doublerUpperBound;
+            laserUnderTesting.CalculateLaserStats();
+            doublerUpperScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.DoublerCount = doublerLowerScore >= doublerUpperScore
+                ? doublerLowerBound
+                : doublerUpperBound;
+        }
+
+        /// <summary>
+        /// Use binary search to calculate optimum count of component index 5
+        /// </summary>
+        void OptimizeComp5Count(Laser laserUnderTesting, int comp5UpperBound)
+        {
+            int comp5LowerBound = 0;
+            int comp5MidPoint;
+            float comp5LowerScore;
+            float comp5UpperScore;
+            int doublerUpperBound;
+            while (comp5UpperBound - comp5LowerBound > 1)
+            {
+                comp5MidPoint = (int)Math.Floor((decimal)(comp5LowerBound + comp5UpperBound) / 2);
+
+                laserUnderTesting.ComponentCounts[5] = comp5LowerBound;
+                doublerUpperBound = InlineDoublers
+                    ? MaxStackLength - comp5LowerBound
+                    : MaxStackLength;
+                OptimizeDoublerCount(laserUnderTesting, doublerUpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp5LowerScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                laserUnderTesting.ComponentCounts[5] = comp5UpperBound;
+                doublerUpperBound = InlineDoublers
+                    ? MaxStackLength - comp5UpperBound
+                    : MaxStackLength;
+                OptimizeDoublerCount(laserUnderTesting, doublerUpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp5UpperScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                if (comp5LowerScore >= comp5UpperScore)
+                {
+                    comp5UpperBound = comp5MidPoint;
+                }
+                else
+                {
+                    comp5LowerBound = comp5MidPoint;
+                }
+            }
+
+            laserUnderTesting.ComponentCounts[5] = comp5LowerBound;
+            doublerUpperBound = InlineDoublers
+                ? MaxStackLength - comp5LowerBound
+                : MaxStackLength;
+            OptimizeDoublerCount(laserUnderTesting, doublerUpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp5LowerScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[5] = comp5UpperBound;
+            doublerUpperBound = InlineDoublers
+                ? MaxStackLength - comp5UpperBound
+                : MaxStackLength;
+            OptimizeDoublerCount(laserUnderTesting, doublerUpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp5UpperScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[5] = comp5LowerScore >= comp5UpperScore
+                ? comp5LowerBound
+                : comp5UpperBound;
+        }
+
+
+        /// <summary>
+        /// Use binary search to calculate optimum count of component index 4
+        /// </summary>
+        void OptimizeComp4Count(Laser laserUnderTesting, int comp4UpperBound)
+        {
+            int comp4LowerBound = 0;
+            int comp4MidPoint;
+            float comp4LowerScore;
+            float comp4UpperScore;
+            int comp5UpperBound;
+            while (comp4UpperBound - comp4LowerBound > 1)
+            {
+                comp4MidPoint = (int)Math.Floor((decimal)(comp4LowerBound + comp4UpperBound) / 2);
+
+                laserUnderTesting.ComponentCounts[4] = comp4LowerBound;
+                comp5UpperBound = MaxStackLength - comp4LowerBound;
+                OptimizeComp5Count(laserUnderTesting, comp5UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp4LowerScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                laserUnderTesting.ComponentCounts[4] = comp4UpperBound;
+                comp5UpperBound = MaxStackLength - comp4UpperBound;
+                OptimizeComp5Count(laserUnderTesting, comp5UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp4UpperScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                if (comp4LowerScore >= comp4UpperScore)
+                {
+                    comp4UpperBound = comp4MidPoint;
+                }
+                else
+                {
+                    comp4LowerBound = comp4MidPoint;
+                }
+            }
+
+            laserUnderTesting.ComponentCounts[4] = comp4LowerBound;
+            comp5UpperBound = MaxStackLength - comp4LowerBound;
+            OptimizeComp5Count(laserUnderTesting, comp5UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp4LowerScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[4] = comp4UpperBound;
+            comp5UpperBound = MaxStackLength - comp4UpperBound;
+            OptimizeComp5Count(laserUnderTesting, comp5UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp4UpperScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[4] = comp4LowerScore >= comp4UpperScore
+                ? comp4LowerBound
+                : comp4UpperBound;
+        }
+
+
+        /// <summary>
+        /// Use binary search to calculate optimum count of component index 3
+        /// </summary>
+        void OptimizeComp3Count(Laser laserUnderTesting, int comp3UpperBound)
+        {
+            int comp3LowerBound = 0;
+            int comp3MidPoint;
+            float comp3LowerScore;
+            float comp3UpperScore;
+            int comp4UpperBound;
+            while (comp3UpperBound - comp3LowerBound > 1)
+            {
+                comp3MidPoint = (int)Math.Floor((decimal)(comp3LowerBound + comp3UpperBound) / 2);
+
+                laserUnderTesting.ComponentCounts[3] = comp3LowerBound;
+                comp4UpperBound = MaxStackLength - comp3LowerBound;
+                OptimizeComp4Count(laserUnderTesting, comp4UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp3LowerScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                laserUnderTesting.ComponentCounts[3] = comp3UpperBound;
+                comp4UpperBound = MaxStackLength - comp3UpperBound;
+                OptimizeComp4Count(laserUnderTesting, comp4UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp3UpperScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                if (comp3LowerScore >= comp3UpperScore)
+                {
+                    comp3UpperBound = comp3MidPoint;
+                }
+                else
+                {
+                    comp3LowerBound = comp3MidPoint;
+                }
+            }
+
+            laserUnderTesting.ComponentCounts[3] = comp3LowerBound;
+            comp4UpperBound = MaxStackLength - comp3LowerBound;
+            OptimizeComp4Count(laserUnderTesting, comp4UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp3LowerScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[3] = comp3UpperBound;
+            comp4UpperBound = MaxStackLength - comp3UpperBound;
+            OptimizeComp4Count(laserUnderTesting, comp4UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp3UpperScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[3] = comp3LowerScore >= comp3UpperScore
+                ? comp3LowerBound
+                : comp3UpperBound;
+        }
+
+        /// <summary>
+        /// Use binary search to calculate optimum count of component index 2
+        /// </summary>
+        void OptimizeComp2Count(Laser laserUnderTesting, int comp2UpperBound)
+        {
+            int comp2LowerBound = 0;
+            int comp2MidPoint;
+            float comp2LowerScore;
+            float comp2UpperScore;
+            int comp3UpperBound;
+            while (comp2UpperBound - comp2LowerBound > 1)
+            {
+                comp2MidPoint = (int)Math.Floor((decimal)(comp2LowerBound + comp2UpperBound) / 2);
+
+                laserUnderTesting.ComponentCounts[2] = comp2LowerBound;
+                comp3UpperBound = MaxStackLength - comp2LowerBound;
+                OptimizeComp3Count(laserUnderTesting, comp3UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp2LowerScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                laserUnderTesting.ComponentCounts[2] = comp2UpperBound;
+                comp3UpperBound = MaxStackLength - comp2UpperBound;
+                OptimizeComp3Count(laserUnderTesting, comp3UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp2UpperScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                if (comp2LowerScore >= comp2UpperScore)
+                {
+                    comp2UpperBound = comp2MidPoint;
+                }
+                else
+                {
+                    comp2LowerBound = comp2MidPoint;
+                }
+            }
+
+            laserUnderTesting.ComponentCounts[2] = comp2LowerBound;
+            comp3UpperBound = MaxStackLength - comp2LowerBound;
+            OptimizeComp3Count(laserUnderTesting, comp3UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp2LowerScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[2] = comp2UpperBound;
+            comp3UpperBound = MaxStackLength - comp2UpperBound;
+            OptimizeComp3Count(laserUnderTesting, comp3UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp2UpperScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[2] = comp2LowerScore >= comp2UpperScore
+                ? comp2LowerBound
+                : comp2UpperBound;
+        }
+
+        /// <summary>
+        /// Use binary search to calculate optimum count of component index 1
+        /// </summary>
+        void OptimizeComp1Count(Laser laserUnderTesting, int comp1UpperBound)
+        {
+            int comp1LowerBound = 0;
+            int comp1MidPoint;
+            float comp1LowerScore;
+            float comp1UpperScore;
+            int comp2UpperBound;
+            while (comp1UpperBound - comp1LowerBound > 1)
+            {
+                comp1MidPoint = (int)Math.Floor((decimal)(comp1LowerBound + comp1UpperBound) / 2);
+
+                laserUnderTesting.ComponentCounts[1] = comp1LowerBound;
+                comp2UpperBound = MaxStackLength - comp1LowerBound;
+                OptimizeComp2Count(laserUnderTesting, comp2UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp1LowerScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                laserUnderTesting.ComponentCounts[1] = comp1UpperBound;
+                comp2UpperBound = MaxStackLength - comp1UpperBound;
+                OptimizeComp2Count(laserUnderTesting, comp2UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp1UpperScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                if (comp1LowerScore >= comp1UpperScore)
+                {
+                    comp1UpperBound = comp1MidPoint;
+                }
+                else
+                {
+                    comp1LowerBound = comp1MidPoint;
+                }
+            }
+
+            laserUnderTesting.ComponentCounts[1] = comp1LowerBound;
+            comp2UpperBound = MaxStackLength - comp1LowerBound;
+            OptimizeComp2Count(laserUnderTesting, comp2UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp1LowerScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[1] = comp1UpperBound;
+            comp2UpperBound = MaxStackLength - comp1UpperBound;
+            OptimizeComp2Count(laserUnderTesting, comp2UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp1UpperScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[1] = comp1LowerScore >= comp1UpperScore
+                ? comp1LowerBound
+                : comp1UpperBound;
+        }
+
+
+        /// <summary>
+        /// Use binary search to calculate optimum count of component index 0
+        /// </summary>
+        void OptimizeComp0Count(Laser laserUnderTesting, int comp0UpperBound)
+        {
+            int comp0LowerBound = 0;
+            int comp0MidPoint;
+            float comp0LowerScore;
+            float comp0UpperScore;
+            int comp1UpperBound;
+            while (comp0UpperBound - comp0LowerBound > 1)
+            {
+                comp0MidPoint = (int)Math.Floor((decimal)(comp0LowerBound + comp0UpperBound) / 2);
+
+                laserUnderTesting.ComponentCounts[0] = comp0LowerBound;
+                comp1UpperBound = MaxStackLength - comp0LowerBound;
+                OptimizeComp1Count(laserUnderTesting, comp1UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp0LowerScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                laserUnderTesting.ComponentCounts[0] = comp0UpperBound;
+                comp1UpperBound = MaxStackLength - comp0UpperBound;
+                OptimizeComp1Count(laserUnderTesting, comp1UpperBound);
+                laserUnderTesting.CalculateLaserStats();
+                comp0UpperScore = VariableToCompare == TestType.DpsPerCost
+                    ? laserUnderTesting.DpsPerCost
+                    : laserUnderTesting.DpsPerVolume;
+
+                if (comp0LowerScore >= comp0UpperScore)
+                {
+                    comp0UpperBound = comp0MidPoint;
+                }
+                else
+                {
+                    comp0LowerBound = comp0MidPoint;
+                }
+            }
+
+            laserUnderTesting.ComponentCounts[0] = comp0LowerBound;
+            comp1UpperBound = MaxStackLength - comp0LowerBound;
+            OptimizeComp1Count(laserUnderTesting, comp1UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp0LowerScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[0] = comp0UpperBound;
+            comp1UpperBound = MaxStackLength - comp0UpperBound;
+            OptimizeComp1Count(laserUnderTesting, comp1UpperBound);
+            laserUnderTesting.CalculateLaserStats();
+            comp0UpperScore = VariableToCompare == TestType.DpsPerCost
+                ? laserUnderTesting.DpsPerCost
+                : laserUnderTesting.DpsPerVolume;
+
+            laserUnderTesting.ComponentCounts[0] = comp0LowerScore >= comp0UpperScore
+                ? comp0LowerBound
+                : comp0UpperBound;
+        }
     }
 }
