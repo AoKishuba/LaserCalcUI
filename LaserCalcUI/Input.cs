@@ -88,9 +88,6 @@ namespace LaserCalcUI
                     ? (int)PlanarSmokeUD.Value
                     : 0;
 
-<<<<<<< Updated upstream
-            comparer.LaserTest();
-=======
                 LaserComparer comparer = new(
                     (int)StackLengthUD.Value,
                     (int)StackCountUD.Value,
@@ -111,7 +108,7 @@ namespace LaserCalcUI
                     toCompare,
                     (int)TestIntervalUD.Value
                     );
->>>>>>> Stashed changes
+
 
                 comparer.LaserTest();
 
