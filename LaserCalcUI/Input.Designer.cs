@@ -77,6 +77,7 @@ namespace LaserCalcUI
             this.TestPerLabel2 = new System.Windows.Forms.Label();
             this.TestPerLabel = new System.Windows.Forms.Label();
             this.TestParametersLabel = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.StackLengthUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StackCountUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TargetACUD)).BeginInit();
@@ -95,11 +96,17 @@ namespace LaserCalcUI
             this.TargetDefensesPanel.SuspendLayout();
             this.EngineStatsPanel.SuspendLayout();
             this.TestParametersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // StackLengthUD
             // 
             this.StackLengthUD.Location = new System.Drawing.Point(160, 20);
+            this.StackLengthUD.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             this.StackLengthUD.Minimum = new decimal(new int[] {
             1,
             0,
@@ -689,6 +696,10 @@ namespace LaserCalcUI
             this.TestParametersLabel.TabIndex = 12;
             this.TestParametersLabel.Text = "Test Parameters";
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // Input
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -724,6 +735,7 @@ namespace LaserCalcUI
             this.EngineStatsPanel.PerformLayout();
             this.TestParametersPanel.ResumeLayout(false);
             this.TestParametersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -777,6 +789,7 @@ namespace LaserCalcUI
         private System.Windows.Forms.Label MaxRechargeLabel;
         private System.Windows.Forms.NumericUpDown MinRechargeUD;
         private System.Windows.Forms.Label MinRechargeLabel;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
 

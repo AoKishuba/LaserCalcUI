@@ -41,57 +41,82 @@ namespace LaserCalcUI
 
         private void RunTestsButton_Click(object sender, EventArgs e)
         {
-            // Disable button
-            RunTestsButton.Enabled = false;
+            bool error = true;
+            if (EnginePpmUD.Value == 0)
+            {
+                errorProvider1.SetError(EnginePpmUD, "Engine PPM must be > 0");
+            }
+            else if (EnginePpvUD.Value == 0)
+            {
+                errorProvider1.SetError(EnginePpvUD, "Engine PPV must be > 0");
+            }
+            else if (EnginePpcUD.Value == 0)
+            {
+                errorProvider1.SetError(EnginePpcUD, "Engine PPC must be > 0");
+            }
+            else
+            {
+                error = false;
+            }
 
-            float storagePerCost = GenericStorageRB.Checked
-                ? 250f
-                : CargoContainerRB.Checked
-                    ? 469.5652f
-                    : 218.75f;
+            if (!error)
+            {
+                // Disable button
+                RunTestsButton.Enabled = false;
 
-            float storagePerVolume = GenericStorageRB.Checked
-                ? 500f
-                : CargoContainerRB.Checked
-                    ? 1000f
-                    : 583.3333f;
+                float storagePerCost = GenericStorageRB.Checked
+                    ? 250f
+                    : CargoContainerRB.Checked
+                        ? 469.5652f
+                        : 218.75f;
 
-            TestType toCompare = DpsPerCostRB.Checked
-                ? TestType.DpsPerCost
-                : TestType.DpsPerVolume;
+                float storagePerVolume = GenericStorageRB.Checked
+                    ? 500f
+                    : CargoContainerRB.Checked
+                        ? 1000f
+                        : 583.3333f;
 
-            float ringACBonus = RingACRB.Checked
-                ? (float)RingACUD.Value
-                : 0;
+                TestType toCompare = DpsPerCostRB.Checked
+                    ? TestType.DpsPerCost
+                    : TestType.DpsPerVolume;
 
-            int planarSmokeStrength = PlanarSmokeRB.Checked
-                ? (int)PlanarSmokeUD.Value
-                : 0;
+                float ringACBonus = RingACRB.Checked
+                    ? (float)RingACUD.Value
+                    : 0;
 
-            LaserComparer comparer = new(
-                (int)StackLengthUD.Value,
-                (int)StackCountUD.Value,
-                InlineDoublersCB.Checked,
-                (int)CombinerCountUD.Value,
-                (int)MinRechargeUD.Value,
-                (int)MaxRechargeUD.Value,
-                (float)TargetACUD.Value,
-                ringACBonus,
-                (int)SmokeStrengthUD.Value,
-                planarSmokeStrength,
-                (float)EnginePpmUD.Value,
-                (float)EnginePpvUD.Value,
-                (float)EnginePpcUD.Value,
-                RequiresFuelCB.Checked,
-                storagePerCost,
-                storagePerVolume,
-                toCompare,
-                (int)TestIntervalUD.Value
-                );
+                int planarSmokeStrength = PlanarSmokeRB.Checked
+                    ? (int)PlanarSmokeUD.Value
+                    : 0;
 
+<<<<<<< Updated upstream
             comparer.LaserTest();
+=======
+                LaserComparer comparer = new(
+                    (int)StackLengthUD.Value,
+                    (int)StackCountUD.Value,
+                    InlineDoublersCB.Checked,
+                    (int)CombinerCountUD.Value,
+                    (int)MinRechargeUD.Value,
+                    (int)MaxRechargeUD.Value,
+                    (float)TargetACUD.Value,
+                    ringACBonus,
+                    (int)SmokeStrengthUD.Value,
+                    planarSmokeStrength,
+                    (float)EnginePpmUD.Value,
+                    (float)EnginePpvUD.Value,
+                    (float)EnginePpcUD.Value,
+                    RequiresFuelCB.Checked,
+                    storagePerCost,
+                    storagePerVolume,
+                    toCompare,
+                    (int)TestIntervalUD.Value
+                    );
+>>>>>>> Stashed changes
 
-            RunTestsButton.Enabled = true;
+                comparer.LaserTest();
+
+                RunTestsButton.Enabled = true;
+            }
         }
     }
 }

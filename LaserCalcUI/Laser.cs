@@ -168,7 +168,7 @@ namespace LaserCalcUI
             writer.WriteLine("Energy discharge/sec: " + DischargeRate);
             writer.WriteLine("Base AP: " + AP);
             writer.WriteLine("AP after smoke: " + EffectiveAP);
-            writer.WriteLine("Applied damage per second: " + Dps);
+            writer.WriteLine("Sustained damage per second: " + Dps);
             writer.WriteLine("DPS per cost: " + DpsPerCost);
             writer.WriteLine("DPS per volume: " + DpsPerVolume);
         }
@@ -198,6 +198,7 @@ namespace LaserCalcUI
 
             PumpVolume *= StackCount;
             RechargeRate = PumpVolume * 24;
+            EnginePower = RechargeRate * 1.25f;
         }
 
         /// <summary>
@@ -233,9 +234,7 @@ namespace LaserCalcUI
             }
             float dischargeMultiplier = 1f - MathF.Pow(1f - 0.1f, ComponentCounts[destabIndex] + 1f);
 
-            DischargeRate = MathF.Min(EnergyStorage * dischargeMultiplier * CombinerCount, PumpVolume * 24f);
-
-            EnginePower = DischargeRate * 1.25f;
+            DischargeRate = EnergyStorage * dischargeMultiplier * CombinerCount;
         }
 
         /// <summary>
@@ -326,9 +325,10 @@ namespace LaserCalcUI
             // 27 smoke strength = 100% power
             EffectiveAP = AP * SmokeAPMultiplier;
 
-            Dps = AP >= TargetEffectiveAC
-                ? DischargeRate
-                : DischargeRate * EffectiveAP / TargetEffectiveAC;
+            float outputRate = MathF.Min(RechargeRate, DischargeRate);
+            Dps = EffectiveAP >= TargetEffectiveAC
+                ? outputRate
+                : outputRate * EffectiveAP / TargetEffectiveAC;
 
             if (!UsesQSwitch)
             {

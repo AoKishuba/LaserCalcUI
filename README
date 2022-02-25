@@ -1,0 +1,100 @@
+LaserCalcUI, a laser optimizer for Brilliant Skies' game From the Depths
+Written by Ao Kishuba (aokishuba@gmail.com)
+
+For update notifications and useful links to my other documents, join my
+Discord repository server: https://discord.gg/B7RrpZAA
+
+---- HOW TO RUN ----
+If running from the downloaded .zip file, run the executable "LaserCalcUI".
+The link to download is available in my Discord repository, linked above.
+
+---- TEST PARAMETERS ----
+NOTE: Results for each test will be written to a text file in the LaserCalcUI
+folder. Filenames are automatically generated from current time. An example
+filename is "2021-07-04_09-12-11-12".
+
+Stack Length: Max number of laser components in a row.
+
+Stack Count: Number of parallel rows of laser components.
+
+Inline Doublers: Check if mounting doublers at the end of the rows. It is
+better to mount doublers separately whenever possible.
+
+Combiner Count: Number of Laser combiner and LAMS node blocks connected to
+this system.
+
+Min/Max Recharge Time: Min/max allowed time to charge from empty to full.
+
+Storage Type: Select the type of storage on the craft. Used for storing
+materials burned as fuel.
+
+Engine PPM: Engine Power Per Material, as shown ingame
+
+Engine PPV: Engine Power Per Volume, as shown ingame
+
+Engine PPC: Engine Power Per Cost, calculated by dividing power output by
+block cost (in the stats tab)
+
+Requires Fuel Access: Indicates engine will require fuel beams for access.
+Check if using fuel engine or CJE.
+
+Target AC: Base AC of target block. Note that laser damage ignores stacking.
+
+Smoke Strength: Strength of smoke between laser and target. 1 full-strength
+smoke dispenser = 25,000 smoke strength.
+
+Planar Smoke Equivalent: Planar Shield Smoke equivalent, as shown ingame.
+
+Ring Shield AC Bonus: AC bonus from ring shield. Note that Planar shield 
+projectors and ring shields are mutually exclusive.
+
+Test for cost/volume: Whether to compare damage per total system cost or 
+volume. Includes laser components, materials burned as fuel, storage, fuel
+access, and engine.
+
+
+
+
+
+---- OPTIMIZER OUTPUT ----
+The optimizer output always begins with the test parameters entered by the 
+user at runtime. Below that are the top two lasers: one without Q-switches 
+and one with.
+
+Component counts: Shows the number of each type of laser component.
+
+Laser cost: Total cost of all laser components. Includes components listed
+above, Multipurpose laser, and one Laser coupler per stack.
+
+Engine cost: Total cost of engine blocks.
+
+Fuel access cost: Cost of fuel tanks needed to sustain engine output. Only 
+applies if Requires Fuel Access was checked.
+
+Fuel storage cost: Cost of storage blocks required to hold materials burned 
+as fuel. Applies to all engines.
+
+Materials burned as fuel: Materials consumed by engine to produce power.
+
+Laser volume, &c, are same as cost, but for volume instead.
+
+Engine power: Required power to sustain laser pumps.
+
+Energy recharge/sec: Laser energy recharged per second.
+
+Energy storage: Laser energy stored in all cavities.
+
+Recharge time (sec): Time to charge laser cavities from empty to full.
+
+Energy discharge/sec: Laser energy released per second. Assumes regulator.
+
+Base AP: Base Armour Pierce rating of laser.
+
+AP after smoke: AP after applying smoke penalty.
+
+Sustained damage per second: Laser damage per second. Uses discharge rate or 
+recharge rate, whichever is lower.
+
+DPS per cost: Sustained damage per second divided by total cost.
+
+DPS per volume: Sustained damage per second divided by total volume.
