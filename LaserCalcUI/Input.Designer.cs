@@ -257,6 +257,11 @@ namespace LaserCalcUI
             this.EnginePpmUD.TabIndex = 17;
             this.EnginePpmUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.EnginePpmUD, "Engine Power Per Material");
+            this.EnginePpmUD.Value = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
             // 
             // EnginePpvUD
             // 
@@ -277,6 +282,11 @@ namespace LaserCalcUI
             this.EnginePpvUD.TabIndex = 20;
             this.EnginePpvUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.EnginePpvUD, "Engine Power Per Volume");
+            this.EnginePpvUD.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
             // 
             // EnginePpcUD
             // 
@@ -297,6 +307,11 @@ namespace LaserCalcUI
             this.EnginePpcUD.TabIndex = 22;
             this.EnginePpcUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.toolTip1.SetToolTip(this.EnginePpcUD, "Engine Power Per Cost");
+            this.EnginePpcUD.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // RequiresFuelCB
             // 
