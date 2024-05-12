@@ -29,8 +29,7 @@ namespace LaserCalcUI
         /// <param name="combinerCount">Number of combiners and LAMS nodes</param>
         /// <param name="minRechargeTime">Minimum recharge time in seconds</param>
         /// <param name="maxRechargeTime">Maximum recharge time in seconds</param>
-        /// <param name="targetAC">Target base AC</param>
-        /// <param name="ringACBonus">AC bonus from ring shields</param>
+        /// <param name="targetResistance">Target base fire resistance</param>
         /// <param name="smokeStrength">Smoke strength, in smoke units (25 000 per max-strength dispenser)</param>
         /// <param name="planarShieldStrength">Smoke strength equivalent of planar shields</param>
         /// <param name="enginePpm">Engine Power Per Material</param>
@@ -41,6 +40,7 @@ namespace LaserCalcUI
         /// <param name="storagePerVolume">Quantity of material stored per volume of storage</param>
         /// <param name="variableToCompare">Whether to test for DPS per Volume or DPS per Cost</param>
         /// <param name="testInterval">Test interval in minutes</param>
+        /// <param name="columnDelimiter">Comma for US, semicolon for countries which use comma for decimal</param>
         public LaserComparer(
             int maxStackLength,
             int stackCount,
@@ -48,8 +48,7 @@ namespace LaserCalcUI
             int combinerCount,
             int minRechargeTime,
             int maxRechargeTime,
-            float targetAC,
-            float ringACBonus,
+            float targetResistance,
             int smokeStrength,
             int planarShieldStrength,
             float enginePpm,
@@ -59,7 +58,8 @@ namespace LaserCalcUI
             float storagePerCost,
             float storagePerVolume,
             TestType variableToCompare,
-            int testInterval
+            int testInterval,
+            char columnDelimiter
             )
         {
             MaxStackLength = maxStackLength;
@@ -68,12 +68,10 @@ namespace LaserCalcUI
             CombinerCount = combinerCount;
             MinRechargeTime = minRechargeTime;
             MaxRechargeTime = maxRechargeTime;
-            TargetAC = targetAC;
-            RingACBonus = ringACBonus;
-            EffectiveAC = TargetAC + RingACBonus;
+            TargetResistance = targetResistance;
             SmokeStrength = smokeStrength;
             PlanarShieldStrength = planarShieldStrength;
-            SmokeAPMultiplier = MathF.Min(1, 3f / MathF.Pow(SmokeStrength + PlanarShieldStrength, (float)1 / 3));
+            SmokeIntensityMultiplier = 18f / MathF.Pow(1500f + SmokeStrength + PlanarShieldStrength, 0.4f);
             EnginePpm = enginePpm;
             EnginePpv = enginePpv;
             EnginePpc = enginePpc;
@@ -82,6 +80,7 @@ namespace LaserCalcUI
             StoragePerVolume = storagePerVolume;
             VariableToCompare = variableToCompare;
             TestInterval = testInterval;
+            ColumnDelimiter = columnDelimiter;
         }
 
         int MaxStackLength { get; }
@@ -90,12 +89,10 @@ namespace LaserCalcUI
         int CombinerCount { get; }
         int MinRechargeTime { get; }
         int MaxRechargeTime { get; }
-        float TargetAC { get; }
-        float RingACBonus { get; }
-        float EffectiveAC { get; }
+        float TargetResistance { get; }
         int SmokeStrength { get; }
         int PlanarShieldStrength { get; }
-        float SmokeAPMultiplier { get; }
+        float SmokeIntensityMultiplier { get; }
         float EnginePpm { get; }
         float EnginePpv { get; }
         float EnginePpc { get; }
@@ -104,17 +101,19 @@ namespace LaserCalcUI
         float StoragePerVolume { get; }
         TestType VariableToCompare { get; }
         int TestInterval { get; }
-        ConcurrentBag<Laser> LaserBag = new();
+        char ColumnDelimiter { get; }
+        ConcurrentBag<Laser> LaserBag = [];
 
         /// <summary>
-        /// Iterable generator for laser configurations. Generates all possible combinations of components at all possible AP values
+        /// Iterable generator for laser configurations. Generates all possible combinations of components 
+        /// at all possible intensity values
         /// for both Q and non-Q lasers
         /// </summary>
         /// <returns></returns>
         IEnumerable<LaserConfiguration> GenerateLaserConfigurations(int comp0Count)
         {
             int totalCount;
-            bool[] boolArr = new[] { true, false };
+            bool[] boolArr = [true, false];
 
             totalCount = comp0Count;
 
@@ -136,31 +135,35 @@ namespace LaserCalcUI
 
                             for (int comp5Count = 0; comp5Count <= MaxStackLength - totalCount; comp5Count++)
                             {
-                                int maxDoublerCount;
-                                maxDoublerCount = InlineDoublers
-                                    ? MaxStackLength - comp0Count - comp1Count - comp2Count - comp3Count - comp4Count - comp5Count
-                                    : MaxStackLength;
-
-                                for (int doublerCount = 0; doublerCount <= maxDoublerCount; doublerCount++)
+                                for (int comp6Count = 0; comp6Count <= MaxStackLength - totalCount; comp6Count++)
                                 {
-                                    foreach (bool qSwitch in boolArr)
+                                    int maxDoublerCount;
+                                    maxDoublerCount = InlineDoublers
+                                        ? MaxStackLength - comp0Count - comp1Count - comp2Count - comp3Count - comp4Count - comp5Count
+                                        : MaxStackLength;
+
+                                    for (int doublerCount = 0; doublerCount <= maxDoublerCount; doublerCount++)
                                     {
-                                        int[] componentCounts = new[]
+                                        foreach (bool qSwitch in boolArr)
                                         {
+                                            int[] componentCounts =
+                                            [
                                                 comp0Count,
                                                 comp1Count,
                                                 comp2Count,
                                                 comp3Count,
                                                 comp4Count,
-                                                comp5Count
-                                            };
+                                                comp5Count,
+                                                comp6Count
+                                                ];
 
-                                        yield return new LaserConfiguration
-                                        {
-                                            ComponentCounts = componentCounts,
-                                            DoublerCount = doublerCount,
-                                            UsesQSwitch = qSwitch
-                                        };
+                                            yield return new LaserConfiguration
+                                            {
+                                                ComponentCounts = componentCounts,
+                                                DoublerCount = doublerCount,
+                                                UsesQSwitch = qSwitch
+                                            };
+                                        }
                                     }
                                 }
                             }
@@ -185,15 +188,16 @@ namespace LaserCalcUI
                 StackCount,
                 CombinerCount,
                 false,
-                EffectiveAC,
-                SmokeAPMultiplier,
+                TargetResistance,
+                SmokeIntensityMultiplier,
                 EnginePpm,
                 EnginePpv,
                 EnginePpc,
                 RequiresFuelAccess,
                 StoragePerCost,
                 StoragePerVolume,
-                TestInterval
+                TestInterval,
+                ColumnDelimiter
                 );
 
             // 1-4 Q
@@ -204,15 +208,16 @@ namespace LaserCalcUI
                 StackCount,
                 CombinerCount,
                 true,
-                EffectiveAC,
-                SmokeAPMultiplier,
+                TargetResistance,
+                SmokeIntensityMultiplier,
                 EnginePpm,
                 EnginePpv,
                 EnginePpc,
                 RequiresFuelAccess,
                 StoragePerCost,
                 StoragePerVolume,
-                TestInterval
+                TestInterval,
+                ColumnDelimiter
                 );
 
             //Test all possible configurations
@@ -228,15 +233,16 @@ namespace LaserCalcUI
                         StackCount,
                         CombinerCount,
                         laserConfig.UsesQSwitch,
-                        EffectiveAC,
-                        SmokeAPMultiplier,
+                        TargetResistance,
+                        SmokeIntensityMultiplier,
                         EnginePpm,
                         EnginePpv,
                         EnginePpc,
                         RequiresFuelAccess,
                         StoragePerCost,
                         StoragePerVolume,
-                        TestInterval
+                        TestInterval,
+                        ColumnDelimiter
                         );
                     laserUnderTesting.CalculateLaserStats();
                     LaserBag.Add(laserUnderTesting);
@@ -290,14 +296,14 @@ namespace LaserCalcUI
             }
 
             //Write results
-            string fileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss-ff") + ".txt";
+            string fileName = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss-ff") + ".csv";
 
             using var writer = new StreamWriter(fileName, append: true);
             FileStream fs = (FileStream)writer.BaseStream;
 
             writer.WriteLine("Test Parameters");
-            writer.WriteLine("Max stack length: " + MaxStackLength);
-            writer.WriteLine("Stack count: " + StackCount);
+            writer.WriteLine("Max stack length" + ColumnDelimiter + MaxStackLength);
+            writer.WriteLine("Stack count" + ColumnDelimiter + StackCount);
             if (InlineDoublers)
             {
                 writer.WriteLine("Doublers inline with stacks");
@@ -306,18 +312,19 @@ namespace LaserCalcUI
             {
                 writer.WriteLine("Doublers separate from stacks");
             }
-            writer.WriteLine("Min recharge time (sec): " + MinRechargeTime);
-            writer.WriteLine("Max recharge time (sec): " + MaxRechargeTime);
-            writer.WriteLine("Target base AC: " + TargetAC);
-            writer.WriteLine("AC bonus from ring shields: " + RingACBonus);
-            writer.WriteLine("Target eff. AC: " + EffectiveAC);
-            writer.WriteLine("Smoke strength: " + SmokeStrength);
-            writer.WriteLine("Planar smoke equivalent: " + PlanarShieldStrength);
-            writer.WriteLine("Eff. smoke strength: " + (SmokeStrength + PlanarShieldStrength));
-            writer.WriteLine("Smoke reduces AP to " + (SmokeAPMultiplier * 100) + "%");
-            writer.WriteLine("Engine PPM: " + EnginePpm);
-            writer.WriteLine("Engine PPV: " + EnginePpv);
-            writer.WriteLine("Engine PPC: " + EnginePpc);
+            writer.WriteLine("Min recharge time (sec)" + ColumnDelimiter + MinRechargeTime);
+            writer.WriteLine("Max recharge time (sec)" + ColumnDelimiter + MaxRechargeTime);
+            writer.WriteLine("Target fire resistance" + ColumnDelimiter + TargetResistance);
+            writer.WriteLine("Smoke strength" + ColumnDelimiter + SmokeStrength);
+            writer.WriteLine("Planar smoke equivalent" + ColumnDelimiter + PlanarShieldStrength);
+            writer.WriteLine("Eff. smoke strength" + ColumnDelimiter + (SmokeStrength + PlanarShieldStrength));
+            writer.WriteLine("Smoke reduces intensity to" 
+                + ColumnDelimiter 
+                + (SmokeIntensityMultiplier * 100) 
+                + "%");
+            writer.WriteLine("Engine PPM" + ColumnDelimiter + EnginePpm);
+            writer.WriteLine("Engine PPV" + ColumnDelimiter + EnginePpv);
+            writer.WriteLine("Engine PPC" + ColumnDelimiter + EnginePpc);
             if (RequiresFuelAccess)
             {
                 writer.WriteLine("Engine requires fuel access");
@@ -328,7 +335,7 @@ namespace LaserCalcUI
             }
             if (VariableToCompare == TestType.DpsPerVolume)
             {
-                writer.WriteLine("Testing for Dps per Volume " + TestInterval + " minutes.");
+                writer.WriteLine("Testing for Dps per Volume over " + TestInterval + " minutes.");
             }
             else if (VariableToCompare == TestType.DpsPerCost)
             {

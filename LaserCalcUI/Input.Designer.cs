@@ -29,730 +29,603 @@ namespace LaserCalcUI
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.StackLengthUD = new System.Windows.Forms.NumericUpDown();
-            this.StackLengthLabel = new System.Windows.Forms.Label();
-            this.StackCountLabel = new System.Windows.Forms.Label();
-            this.StackCountUD = new System.Windows.Forms.NumericUpDown();
-            this.TargetACLabel = new System.Windows.Forms.Label();
-            this.TargetACUD = new System.Windows.Forms.NumericUpDown();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.SmokeStrengthUD = new System.Windows.Forms.NumericUpDown();
-            this.PlanarSmokeUD = new System.Windows.Forms.NumericUpDown();
-            this.RingACUD = new System.Windows.Forms.NumericUpDown();
-            this.EnginePpmUD = new System.Windows.Forms.NumericUpDown();
-            this.EnginePpvUD = new System.Windows.Forms.NumericUpDown();
-            this.EnginePpcUD = new System.Windows.Forms.NumericUpDown();
-            this.RequiresFuelCB = new System.Windows.Forms.CheckBox();
-            this.GenericStorageRB = new System.Windows.Forms.RadioButton();
-            this.CargoContainerRB = new System.Windows.Forms.RadioButton();
-            this.CoalRB = new System.Windows.Forms.RadioButton();
-            this.DpsPerCostRB = new System.Windows.Forms.RadioButton();
-            this.DpsPerVolumeRB = new System.Windows.Forms.RadioButton();
-            this.TestIntervalUD = new System.Windows.Forms.NumericUpDown();
-            this.RunTestsButton = new System.Windows.Forms.Button();
-            this.InlineDoublersCB = new System.Windows.Forms.CheckBox();
-            this.CombinerCountUD = new System.Windows.Forms.NumericUpDown();
-            this.MinRechargeUD = new System.Windows.Forms.NumericUpDown();
-            this.MaxRechargeUD = new System.Windows.Forms.NumericUpDown();
-            this.SmokeStrengthLabel = new System.Windows.Forms.Label();
-            this.PlanarSmokeRB = new System.Windows.Forms.RadioButton();
-            this.RingACRB = new System.Windows.Forms.RadioButton();
-            this.EnginePpmLabel = new System.Windows.Forms.Label();
-            this.EnginePpvLabel = new System.Windows.Forms.Label();
-            this.EnginePpcLabel = new System.Windows.Forms.Label();
-            this.StorageTypePanel = new System.Windows.Forms.Panel();
-            this.StorageTypeLabel = new System.Windows.Forms.Label();
-            this.LaserParametersPanel = new System.Windows.Forms.Panel();
-            this.MaxRechargeLabel = new System.Windows.Forms.Label();
-            this.MinRechargeLabel = new System.Windows.Forms.Label();
-            this.CombinerCountLabel = new System.Windows.Forms.Label();
-            this.LaserParametersLabel = new System.Windows.Forms.Label();
-            this.TargetDefensesPanel = new System.Windows.Forms.Panel();
-            this.TargetDefensesLabel = new System.Windows.Forms.Label();
-            this.EngineStatsPanel = new System.Windows.Forms.Panel();
-            this.EngineStatsLabel = new System.Windows.Forms.Label();
-            this.TestParametersPanel = new System.Windows.Forms.Panel();
-            this.TestPerLabel3 = new System.Windows.Forms.Label();
-            this.TestPerLabel2 = new System.Windows.Forms.Label();
-            this.TestPerLabel = new System.Windows.Forms.Label();
-            this.TestParametersLabel = new System.Windows.Forms.Label();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.StackLengthUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.StackCountUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TargetACUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SmokeStrengthUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlanarSmokeUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RingACUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnginePpmUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnginePpvUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnginePpcUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TestIntervalUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CombinerCountUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MinRechargeUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MaxRechargeUD)).BeginInit();
-            this.StorageTypePanel.SuspendLayout();
-            this.LaserParametersPanel.SuspendLayout();
-            this.TargetDefensesPanel.SuspendLayout();
-            this.EngineStatsPanel.SuspendLayout();
-            this.TestParametersPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            StackLengthUD = new NumericUpDown();
+            StackLengthLabel = new Label();
+            StackCountLabel = new Label();
+            StackCountUD = new NumericUpDown();
+            TargetResistanceLabel = new Label();
+            TargetResistanceUD = new NumericUpDown();
+            toolTip1 = new ToolTip(components);
+            SmokeStrengthUD = new NumericUpDown();
+            PlanarSmokeUD = new NumericUpDown();
+            EnginePpmUD = new NumericUpDown();
+            EnginePpvUD = new NumericUpDown();
+            EnginePpcUD = new NumericUpDown();
+            RequiresFuelCB = new CheckBox();
+            GenericStorageRB = new RadioButton();
+            CargoContainerRB = new RadioButton();
+            CoalRB = new RadioButton();
+            DpsPerCostRB = new RadioButton();
+            DpsPerVolumeRB = new RadioButton();
+            TestIntervalUD = new NumericUpDown();
+            RunTestsButton = new Button();
+            InlineDoublersCB = new CheckBox();
+            CombinerCountUD = new NumericUpDown();
+            MinRechargeUD = new NumericUpDown();
+            MaxRechargeUD = new NumericUpDown();
+            SmokeStrengthLabel = new Label();
+            EnginePpmLabel = new Label();
+            EnginePpvLabel = new Label();
+            EnginePpcLabel = new Label();
+            StorageTypePanel = new Panel();
+            StorageTypeLabel = new Label();
+            LaserParametersPanel = new Panel();
+            MaxRechargeLabel = new Label();
+            MinRechargeLabel = new Label();
+            CombinerCountLabel = new Label();
+            LaserParametersLabel = new Label();
+            TargetDefensesPanel = new Panel();
+            label1 = new Label();
+            TargetDefensesLabel = new Label();
+            EngineStatsPanel = new Panel();
+            EngineStatsLabel = new Label();
+            TestParametersPanel = new Panel();
+            TestPerLabel3 = new Label();
+            TestPerLabel2 = new Label();
+            TestPerLabel = new Label();
+            TestParametersLabel = new Label();
+            errorProvider1 = new ErrorProvider(components);
+            CommaDecimalCB = new CheckBox();
+            ((System.ComponentModel.ISupportInitialize)StackLengthUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)StackCountUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)TargetResistanceUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)SmokeStrengthUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PlanarSmokeUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EnginePpmUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EnginePpvUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EnginePpcUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)TestIntervalUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)CombinerCountUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)MinRechargeUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)MaxRechargeUD).BeginInit();
+            StorageTypePanel.SuspendLayout();
+            LaserParametersPanel.SuspendLayout();
+            TargetDefensesPanel.SuspendLayout();
+            EngineStatsPanel.SuspendLayout();
+            TestParametersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            SuspendLayout();
             // 
             // StackLengthUD
             // 
-            this.StackLengthUD.Location = new System.Drawing.Point(160, 20);
-            this.StackLengthUD.Maximum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this.StackLengthUD.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.StackLengthUD.Name = "StackLengthUD";
-            this.StackLengthUD.Size = new System.Drawing.Size(60, 23);
-            this.StackLengthUD.TabIndex = 0;
-            this.StackLengthUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.StackLengthUD, "Max number of laser components in series");
-            this.StackLengthUD.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            StackLengthUD.Location = new Point(160, 20);
+            StackLengthUD.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
+            StackLengthUD.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            StackLengthUD.Name = "StackLengthUD";
+            StackLengthUD.Size = new Size(60, 23);
+            StackLengthUD.TabIndex = 0;
+            StackLengthUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(StackLengthUD, "Max number of laser components in series");
+            StackLengthUD.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // StackLengthLabel
             // 
-            this.StackLengthLabel.AutoSize = true;
-            this.StackLengthLabel.Location = new System.Drawing.Point(0, 24);
-            this.StackLengthLabel.Name = "StackLengthLabel";
-            this.StackLengthLabel.Size = new System.Drawing.Size(75, 15);
-            this.StackLengthLabel.TabIndex = 1;
-            this.StackLengthLabel.Text = "Stack Length";
+            StackLengthLabel.AutoSize = true;
+            StackLengthLabel.Location = new Point(0, 24);
+            StackLengthLabel.Name = "StackLengthLabel";
+            StackLengthLabel.Size = new Size(75, 15);
+            StackLengthLabel.TabIndex = 1;
+            StackLengthLabel.Text = "Stack Length";
             // 
             // StackCountLabel
             // 
-            this.StackCountLabel.AutoSize = true;
-            this.StackCountLabel.Location = new System.Drawing.Point(0, 49);
-            this.StackCountLabel.Name = "StackCountLabel";
-            this.StackCountLabel.Size = new System.Drawing.Size(71, 15);
-            this.StackCountLabel.TabIndex = 3;
-            this.StackCountLabel.Text = "Stack Count";
+            StackCountLabel.AutoSize = true;
+            StackCountLabel.Location = new Point(0, 49);
+            StackCountLabel.Name = "StackCountLabel";
+            StackCountLabel.Size = new Size(71, 15);
+            StackCountLabel.TabIndex = 3;
+            StackCountLabel.Text = "Stack Count";
             // 
             // StackCountUD
             // 
-            this.StackCountUD.Location = new System.Drawing.Point(160, 45);
-            this.StackCountUD.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.StackCountUD.Name = "StackCountUD";
-            this.StackCountUD.Size = new System.Drawing.Size(60, 23);
-            this.StackCountUD.TabIndex = 2;
-            this.StackCountUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.StackCountUD, "Number of parallel stacks of laser components");
-            this.StackCountUD.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            StackCountUD.Location = new Point(160, 45);
+            StackCountUD.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            StackCountUD.Name = "StackCountUD";
+            StackCountUD.Size = new Size(60, 23);
+            StackCountUD.TabIndex = 2;
+            StackCountUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(StackCountUD, "Number of parallel stacks of laser components");
+            StackCountUD.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // TargetACLabel
+            // TargetResistanceLabel
             // 
-            this.TargetACLabel.AutoSize = true;
-            this.TargetACLabel.Location = new System.Drawing.Point(0, 24);
-            this.TargetACLabel.Name = "TargetACLabel";
-            this.TargetACLabel.Size = new System.Drawing.Size(58, 15);
-            this.TargetACLabel.TabIndex = 5;
-            this.TargetACLabel.Text = "Target AC";
+            TargetResistanceLabel.AutoSize = true;
+            TargetResistanceLabel.Location = new Point(0, 24);
+            TargetResistanceLabel.Name = "TargetResistanceLabel";
+            TargetResistanceLabel.Size = new Size(119, 15);
+            TargetResistanceLabel.TabIndex = 5;
+            TargetResistanceLabel.Text = "Target Fire Resistance";
             // 
-            // TargetACUD
+            // TargetResistanceUD
             // 
-            this.TargetACUD.DecimalPlaces = 1;
-            this.TargetACUD.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.TargetACUD.Location = new System.Drawing.Point(155, 20);
-            this.TargetACUD.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.TargetACUD.Name = "TargetACUD";
-            this.TargetACUD.Size = new System.Drawing.Size(60, 23);
-            this.TargetACUD.TabIndex = 4;
-            this.TargetACUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.TargetACUD, "Target Armour Class.\r\nNote that lasers ignore armour stacking.");
-            this.TargetACUD.Value = new decimal(new int[] {
-            40,
-            0,
-            0,
-            0});
+            TargetResistanceUD.DecimalPlaces = 1;
+            TargetResistanceUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            TargetResistanceUD.Location = new Point(155, 20);
+            TargetResistanceUD.Minimum = new decimal(new int[] { 1, 0, 0, 65536 });
+            TargetResistanceUD.Name = "TargetResistanceUD";
+            TargetResistanceUD.Size = new Size(60, 23);
+            TargetResistanceUD.TabIndex = 4;
+            TargetResistanceUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(TargetResistanceUD, "Target Fire Resistance.");
+            TargetResistanceUD.Value = new decimal(new int[] { 40, 0, 0, 0 });
             // 
             // SmokeStrengthUD
             // 
-            this.SmokeStrengthUD.Location = new System.Drawing.Point(155, 45);
-            this.SmokeStrengthUD.Maximum = new decimal(new int[] {
-            250000,
-            0,
-            0,
-            0});
-            this.SmokeStrengthUD.Name = "SmokeStrengthUD";
-            this.SmokeStrengthUD.Size = new System.Drawing.Size(60, 23);
-            this.SmokeStrengthUD.TabIndex = 6;
-            this.SmokeStrengthUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.SmokeStrengthUD, "Target smoke strength.\r\n1 full-strength smoke dispenser = 25,000 strength\r\nMax 25" +
-        "0,000 (10 full-strength dispensers)");
+            SmokeStrengthUD.Location = new Point(155, 45);
+            SmokeStrengthUD.Maximum = new decimal(new int[] { 250000, 0, 0, 0 });
+            SmokeStrengthUD.Name = "SmokeStrengthUD";
+            SmokeStrengthUD.Size = new Size(60, 23);
+            SmokeStrengthUD.TabIndex = 6;
+            SmokeStrengthUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(SmokeStrengthUD, "Target smoke strength.\r\n1 full-strength smoke dispenser = 25,000 strength\r\nMax 250,000 (10 full-strength dispensers)");
             // 
             // PlanarSmokeUD
             // 
-            this.PlanarSmokeUD.Location = new System.Drawing.Point(155, 70);
-            this.PlanarSmokeUD.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.PlanarSmokeUD.Name = "PlanarSmokeUD";
-            this.PlanarSmokeUD.Size = new System.Drawing.Size(60, 23);
-            this.PlanarSmokeUD.TabIndex = 8;
-            this.PlanarSmokeUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.PlanarSmokeUD, "Target planar shield smoke strength equivalent.\r\nMax 1000");
-            // 
-            // RingACUD
-            // 
-            this.RingACUD.DecimalPlaces = 1;
-            this.RingACUD.Enabled = false;
-            this.RingACUD.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.RingACUD.Location = new System.Drawing.Point(155, 95);
-            this.RingACUD.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.RingACUD.Name = "RingACUD";
-            this.RingACUD.Size = new System.Drawing.Size(60, 23);
-            this.RingACUD.TabIndex = 14;
-            this.RingACUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.RingACUD, "Target planar shield strength.\r\nMax 20");
+            PlanarSmokeUD.Location = new Point(155, 70);
+            PlanarSmokeUD.Maximum = new decimal(new int[] { 1500, 0, 0, 0 });
+            PlanarSmokeUD.Name = "PlanarSmokeUD";
+            PlanarSmokeUD.Size = new Size(60, 23);
+            PlanarSmokeUD.TabIndex = 8;
+            PlanarSmokeUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(PlanarSmokeUD, "Target planar shield smoke strength equivalent.\r\nMax 1500");
             // 
             // EnginePpmUD
             // 
-            this.EnginePpmUD.Location = new System.Drawing.Point(155, 20);
-            this.EnginePpmUD.Maximum = new decimal(new int[] {
-            1500,
-            0,
-            0,
-            0});
-            this.EnginePpmUD.Name = "EnginePpmUD";
-            this.EnginePpmUD.Size = new System.Drawing.Size(60, 23);
-            this.EnginePpmUD.TabIndex = 17;
-            this.EnginePpmUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.EnginePpmUD, "Engine Power Per Material");
-            this.EnginePpmUD.Value = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
+            EnginePpmUD.Location = new Point(155, 20);
+            EnginePpmUD.Maximum = new decimal(new int[] { 1500, 0, 0, 0 });
+            EnginePpmUD.Name = "EnginePpmUD";
+            EnginePpmUD.Size = new Size(60, 23);
+            EnginePpmUD.TabIndex = 17;
+            EnginePpmUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(EnginePpmUD, "Engine Power Per Material");
+            EnginePpmUD.Value = new decimal(new int[] { 600, 0, 0, 0 });
             // 
             // EnginePpvUD
             // 
-            this.EnginePpvUD.DecimalPlaces = 1;
-            this.EnginePpvUD.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.EnginePpvUD.Location = new System.Drawing.Point(155, 45);
-            this.EnginePpvUD.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.EnginePpvUD.Name = "EnginePpvUD";
-            this.EnginePpvUD.Size = new System.Drawing.Size(60, 23);
-            this.EnginePpvUD.TabIndex = 20;
-            this.EnginePpvUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.EnginePpvUD, "Engine Power Per Volume");
-            this.EnginePpvUD.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
+            EnginePpvUD.DecimalPlaces = 1;
+            EnginePpvUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            EnginePpvUD.Location = new Point(155, 45);
+            EnginePpvUD.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
+            EnginePpvUD.Name = "EnginePpvUD";
+            EnginePpvUD.Size = new Size(60, 23);
+            EnginePpvUD.TabIndex = 20;
+            EnginePpvUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(EnginePpvUD, "Engine Power Per Volume");
+            EnginePpvUD.Value = new decimal(new int[] { 60, 0, 0, 0 });
             // 
             // EnginePpcUD
             // 
-            this.EnginePpcUD.DecimalPlaces = 1;
-            this.EnginePpcUD.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.EnginePpcUD.Location = new System.Drawing.Point(155, 70);
-            this.EnginePpcUD.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.EnginePpcUD.Name = "EnginePpcUD";
-            this.EnginePpcUD.Size = new System.Drawing.Size(60, 23);
-            this.EnginePpcUD.TabIndex = 22;
-            this.EnginePpcUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.EnginePpcUD, "Engine Power Per Cost");
-            this.EnginePpcUD.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            EnginePpcUD.DecimalPlaces = 1;
+            EnginePpcUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            EnginePpcUD.Location = new Point(155, 70);
+            EnginePpcUD.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
+            EnginePpcUD.Name = "EnginePpcUD";
+            EnginePpcUD.Size = new Size(60, 23);
+            EnginePpcUD.TabIndex = 22;
+            EnginePpcUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(EnginePpcUD, "Engine Power Per Cost");
+            EnginePpcUD.Value = new decimal(new int[] { 5, 0, 0, 0 });
             // 
             // RequiresFuelCB
             // 
-            this.RequiresFuelCB.AutoSize = true;
-            this.RequiresFuelCB.Location = new System.Drawing.Point(0, 99);
-            this.RequiresFuelCB.Name = "RequiresFuelCB";
-            this.RequiresFuelCB.Size = new System.Drawing.Size(135, 19);
-            this.RequiresFuelCB.TabIndex = 23;
-            this.RequiresFuelCB.Text = "Requires Fuel Access";
-            this.toolTip1.SetToolTip(this.RequiresFuelCB, "Check if using a Fuel Engine or Custom Jet Engine.");
-            this.RequiresFuelCB.UseVisualStyleBackColor = true;
+            RequiresFuelCB.AutoSize = true;
+            RequiresFuelCB.Location = new Point(0, 99);
+            RequiresFuelCB.Name = "RequiresFuelCB";
+            RequiresFuelCB.Size = new Size(135, 19);
+            RequiresFuelCB.TabIndex = 23;
+            RequiresFuelCB.Text = "Requires Fuel Access";
+            toolTip1.SetToolTip(RequiresFuelCB, "Check if using a Fuel Engine or Custom Jet Engine.");
+            RequiresFuelCB.UseVisualStyleBackColor = true;
             // 
             // GenericStorageRB
             // 
-            this.GenericStorageRB.AutoSize = true;
-            this.GenericStorageRB.Location = new System.Drawing.Point(0, 20);
-            this.GenericStorageRB.Name = "GenericStorageRB";
-            this.GenericStorageRB.Size = new System.Drawing.Size(65, 19);
-            this.GenericStorageRB.TabIndex = 0;
-            this.GenericStorageRB.TabStop = true;
-            this.GenericStorageRB.Text = "Generic";
-            this.toolTip1.SetToolTip(this.GenericStorageRB, "Everything in the Material Storage Tab besides Coal and Cargo container.");
-            this.GenericStorageRB.UseVisualStyleBackColor = true;
+            GenericStorageRB.AutoSize = true;
+            GenericStorageRB.Location = new Point(0, 20);
+            GenericStorageRB.Name = "GenericStorageRB";
+            GenericStorageRB.Size = new Size(65, 19);
+            GenericStorageRB.TabIndex = 0;
+            GenericStorageRB.TabStop = true;
+            GenericStorageRB.Text = "Generic";
+            toolTip1.SetToolTip(GenericStorageRB, "Everything in the Material Storage Tab besides Coal and Cargo container.");
+            GenericStorageRB.UseVisualStyleBackColor = true;
             // 
             // CargoContainerRB
             // 
-            this.CargoContainerRB.AutoSize = true;
-            this.CargoContainerRB.Location = new System.Drawing.Point(0, 45);
-            this.CargoContainerRB.Name = "CargoContainerRB";
-            this.CargoContainerRB.Size = new System.Drawing.Size(112, 19);
-            this.CargoContainerRB.TabIndex = 2;
-            this.CargoContainerRB.TabStop = true;
-            this.CargoContainerRB.Text = "Cargo Container";
-            this.toolTip1.SetToolTip(this.CargoContainerRB, "Cargo container");
-            this.CargoContainerRB.UseVisualStyleBackColor = true;
+            CargoContainerRB.AutoSize = true;
+            CargoContainerRB.Location = new Point(0, 45);
+            CargoContainerRB.Name = "CargoContainerRB";
+            CargoContainerRB.Size = new Size(112, 19);
+            CargoContainerRB.TabIndex = 2;
+            CargoContainerRB.TabStop = true;
+            CargoContainerRB.Text = "Cargo Container";
+            toolTip1.SetToolTip(CargoContainerRB, "Cargo container");
+            CargoContainerRB.UseVisualStyleBackColor = true;
             // 
             // CoalRB
             // 
-            this.CoalRB.AutoSize = true;
-            this.CoalRB.Location = new System.Drawing.Point(0, 70);
-            this.CoalRB.Name = "CoalRB";
-            this.CoalRB.Size = new System.Drawing.Size(49, 19);
-            this.CoalRB.TabIndex = 3;
-            this.CoalRB.TabStop = true;
-            this.CoalRB.Text = "Coal";
-            this.toolTip1.SetToolTip(this.CoalRB, "Coal pile or Coal pile large");
-            this.CoalRB.UseVisualStyleBackColor = true;
+            CoalRB.AutoSize = true;
+            CoalRB.Location = new Point(0, 70);
+            CoalRB.Name = "CoalRB";
+            CoalRB.Size = new Size(49, 19);
+            CoalRB.TabIndex = 3;
+            CoalRB.TabStop = true;
+            CoalRB.Text = "Coal";
+            toolTip1.SetToolTip(CoalRB, "Coal pile or Coal pile large");
+            CoalRB.UseVisualStyleBackColor = true;
             // 
             // DpsPerCostRB
             // 
-            this.DpsPerCostRB.AutoSize = true;
-            this.DpsPerCostRB.Checked = true;
-            this.DpsPerCostRB.Location = new System.Drawing.Point(184, 32);
-            this.DpsPerCostRB.Name = "DpsPerCostRB";
-            this.DpsPerCostRB.Size = new System.Drawing.Size(47, 19);
-            this.DpsPerCostRB.TabIndex = 13;
-            this.DpsPerCostRB.TabStop = true;
-            this.DpsPerCostRB.Text = "cost";
-            this.toolTip1.SetToolTip(this.DpsPerCostRB, "Select to optimize for DPS per total system cost");
-            this.DpsPerCostRB.UseVisualStyleBackColor = true;
+            DpsPerCostRB.AutoSize = true;
+            DpsPerCostRB.Checked = true;
+            DpsPerCostRB.Location = new Point(184, 32);
+            DpsPerCostRB.Name = "DpsPerCostRB";
+            DpsPerCostRB.Size = new Size(47, 19);
+            DpsPerCostRB.TabIndex = 13;
+            DpsPerCostRB.TabStop = true;
+            DpsPerCostRB.Text = "cost";
+            toolTip1.SetToolTip(DpsPerCostRB, "Select to optimize for DPS per total system cost");
+            DpsPerCostRB.UseVisualStyleBackColor = true;
             // 
             // DpsPerVolumeRB
             // 
-            this.DpsPerVolumeRB.AutoSize = true;
-            this.DpsPerVolumeRB.Location = new System.Drawing.Point(184, 57);
-            this.DpsPerVolumeRB.Name = "DpsPerVolumeRB";
-            this.DpsPerVolumeRB.Size = new System.Drawing.Size(65, 19);
-            this.DpsPerVolumeRB.TabIndex = 15;
-            this.DpsPerVolumeRB.Text = "volume";
-            this.toolTip1.SetToolTip(this.DpsPerVolumeRB, "Select to optimize for DPS per total system volume");
-            this.DpsPerVolumeRB.UseVisualStyleBackColor = true;
+            DpsPerVolumeRB.AutoSize = true;
+            DpsPerVolumeRB.Location = new Point(184, 57);
+            DpsPerVolumeRB.Name = "DpsPerVolumeRB";
+            DpsPerVolumeRB.Size = new Size(65, 19);
+            DpsPerVolumeRB.TabIndex = 15;
+            DpsPerVolumeRB.Text = "volume";
+            toolTip1.SetToolTip(DpsPerVolumeRB, "Select to optimize for DPS per total system volume");
+            DpsPerVolumeRB.UseVisualStyleBackColor = true;
             // 
             // TestIntervalUD
             // 
-            this.TestIntervalUD.Location = new System.Drawing.Point(348, 43);
-            this.TestIntervalUD.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.TestIntervalUD.Name = "TestIntervalUD";
-            this.TestIntervalUD.Size = new System.Drawing.Size(35, 23);
-            this.TestIntervalUD.TabIndex = 17;
-            this.TestIntervalUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.TestIntervalUD, "Test interval in minutes. Used for fuel calculations.\r\n");
-            this.TestIntervalUD.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
+            TestIntervalUD.Location = new Point(348, 43);
+            TestIntervalUD.Maximum = new decimal(new int[] { 60, 0, 0, 0 });
+            TestIntervalUD.Name = "TestIntervalUD";
+            TestIntervalUD.Size = new Size(35, 23);
+            TestIntervalUD.TabIndex = 17;
+            TestIntervalUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(TestIntervalUD, "Test interval in minutes. Used for fuel calculations.\r\n");
+            TestIntervalUD.Value = new decimal(new int[] { 30, 0, 0, 0 });
             // 
             // RunTestsButton
             // 
-            this.RunTestsButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.RunTestsButton.Location = new System.Drawing.Point(0, 82);
-            this.RunTestsButton.Name = "RunTestsButton";
-            this.RunTestsButton.Size = new System.Drawing.Size(456, 50);
-            this.RunTestsButton.TabIndex = 11;
-            this.RunTestsButton.Text = "Run Tests";
-            this.toolTip1.SetToolTip(this.RunTestsButton, "Run test. Results will appear in the LaserCalcUI directory.");
-            this.RunTestsButton.UseVisualStyleBackColor = false;
-            this.RunTestsButton.Click += new System.EventHandler(this.RunTestsButton_Click);
+            RunTestsButton.BackColor = SystemColors.ButtonHighlight;
+            RunTestsButton.Location = new Point(0, 82);
+            RunTestsButton.Name = "RunTestsButton";
+            RunTestsButton.Size = new Size(456, 50);
+            RunTestsButton.TabIndex = 11;
+            RunTestsButton.Text = "Run Tests";
+            toolTip1.SetToolTip(RunTestsButton, "Run test. Results will appear in the LaserCalcUI directory.");
+            RunTestsButton.UseVisualStyleBackColor = false;
+            RunTestsButton.Click += RunTestsButton_Click;
             // 
             // InlineDoublersCB
             // 
-            this.InlineDoublersCB.AutoSize = true;
-            this.InlineDoublersCB.Location = new System.Drawing.Point(0, 74);
-            this.InlineDoublersCB.Name = "InlineDoublersCB";
-            this.InlineDoublersCB.Size = new System.Drawing.Size(105, 19);
-            this.InlineDoublersCB.TabIndex = 15;
-            this.InlineDoublersCB.Text = "Inline Doublers";
-            this.toolTip1.SetToolTip(this.InlineDoublersCB, "Check if frequency doublers will be inline with cavities.\r\nI recommend fitting th" +
-        "em between stacks instead.");
-            this.InlineDoublersCB.UseVisualStyleBackColor = true;
+            InlineDoublersCB.AutoSize = true;
+            InlineDoublersCB.Location = new Point(0, 74);
+            InlineDoublersCB.Name = "InlineDoublersCB";
+            InlineDoublersCB.Size = new Size(105, 19);
+            InlineDoublersCB.TabIndex = 15;
+            InlineDoublersCB.Text = "Inline Doublers";
+            toolTip1.SetToolTip(InlineDoublersCB, "Check if frequency doublers will be inline with cavities.\r\nI recommend fitting them between stacks instead.");
+            InlineDoublersCB.UseVisualStyleBackColor = true;
             // 
             // CombinerCountUD
             // 
-            this.CombinerCountUD.Location = new System.Drawing.Point(160, 95);
-            this.CombinerCountUD.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.CombinerCountUD.Name = "CombinerCountUD";
-            this.CombinerCountUD.Size = new System.Drawing.Size(60, 23);
-            this.CombinerCountUD.TabIndex = 17;
-            this.CombinerCountUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.CombinerCountUD, "Number of Laser combiners and LAMS nodes.");
-            this.CombinerCountUD.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            CombinerCountUD.Location = new Point(160, 95);
+            CombinerCountUD.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            CombinerCountUD.Name = "CombinerCountUD";
+            CombinerCountUD.Size = new Size(60, 23);
+            CombinerCountUD.TabIndex = 17;
+            CombinerCountUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(CombinerCountUD, "Number of Laser combiners and LAMS nodes.");
+            CombinerCountUD.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // MinRechargeUD
             // 
-            this.MinRechargeUD.Location = new System.Drawing.Point(160, 120);
-            this.MinRechargeUD.Name = "MinRechargeUD";
-            this.MinRechargeUD.Size = new System.Drawing.Size(60, 23);
-            this.MinRechargeUD.TabIndex = 19;
-            this.MinRechargeUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.MinRechargeUD, "Minimum acceptable recharge time in seconds.\r\nInclusive.");
-            this.MinRechargeUD.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.MinRechargeUD.ValueChanged += new System.EventHandler(this.MinRechargeUD_ValueChanged);
+            MinRechargeUD.Location = new Point(160, 120);
+            MinRechargeUD.Name = "MinRechargeUD";
+            MinRechargeUD.Size = new Size(60, 23);
+            MinRechargeUD.TabIndex = 19;
+            MinRechargeUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(MinRechargeUD, "Minimum acceptable recharge time in seconds.\r\nInclusive.");
+            MinRechargeUD.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            MinRechargeUD.ValueChanged += MinRechargeUD_ValueChanged;
             // 
             // MaxRechargeUD
             // 
-            this.MaxRechargeUD.Location = new System.Drawing.Point(160, 145);
-            this.MaxRechargeUD.Name = "MaxRechargeUD";
-            this.MaxRechargeUD.Size = new System.Drawing.Size(60, 23);
-            this.MaxRechargeUD.TabIndex = 21;
-            this.MaxRechargeUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.MaxRechargeUD, "Maximum acceptable recharge time in seconds.\r\nInclusive.");
-            this.MaxRechargeUD.Value = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.MaxRechargeUD.ValueChanged += new System.EventHandler(this.MaxRechargeUD_ValueChanged);
+            MaxRechargeUD.Location = new Point(160, 145);
+            MaxRechargeUD.Name = "MaxRechargeUD";
+            MaxRechargeUD.Size = new Size(60, 23);
+            MaxRechargeUD.TabIndex = 21;
+            MaxRechargeUD.TextAlign = HorizontalAlignment.Right;
+            toolTip1.SetToolTip(MaxRechargeUD, "Maximum acceptable recharge time in seconds.\r\nInclusive.");
+            MaxRechargeUD.Value = new decimal(new int[] { 15, 0, 0, 0 });
+            MaxRechargeUD.ValueChanged += MaxRechargeUD_ValueChanged;
             // 
             // SmokeStrengthLabel
             // 
-            this.SmokeStrengthLabel.AutoSize = true;
-            this.SmokeStrengthLabel.Location = new System.Drawing.Point(0, 49);
-            this.SmokeStrengthLabel.Name = "SmokeStrengthLabel";
-            this.SmokeStrengthLabel.Size = new System.Drawing.Size(91, 15);
-            this.SmokeStrengthLabel.TabIndex = 7;
-            this.SmokeStrengthLabel.Text = "Smoke Strength";
-            // 
-            // PlanarSmokeRB
-            // 
-            this.PlanarSmokeRB.AutoSize = true;
-            this.PlanarSmokeRB.Checked = true;
-            this.PlanarSmokeRB.Location = new System.Drawing.Point(0, 74);
-            this.PlanarSmokeRB.Name = "PlanarSmokeRB";
-            this.PlanarSmokeRB.Size = new System.Drawing.Size(155, 19);
-            this.PlanarSmokeRB.TabIndex = 12;
-            this.PlanarSmokeRB.TabStop = true;
-            this.PlanarSmokeRB.Text = "Planar Smoke Equivalent";
-            this.PlanarSmokeRB.UseVisualStyleBackColor = true;
-            this.PlanarSmokeRB.CheckedChanged += new System.EventHandler(this.PlanarSmokeRB_CheckedChanged);
-            // 
-            // RingACRB
-            // 
-            this.RingACRB.AutoSize = true;
-            this.RingACRB.Location = new System.Drawing.Point(0, 99);
-            this.RingACRB.Name = "RingACRB";
-            this.RingACRB.Size = new System.Drawing.Size(139, 19);
-            this.RingACRB.TabIndex = 13;
-            this.RingACRB.Text = "Ring Shield AC Bonus";
-            this.RingACRB.UseVisualStyleBackColor = true;
-            this.RingACRB.CheckedChanged += new System.EventHandler(this.RingACRB_CheckedChanged);
+            SmokeStrengthLabel.AutoSize = true;
+            SmokeStrengthLabel.Location = new Point(0, 49);
+            SmokeStrengthLabel.Name = "SmokeStrengthLabel";
+            SmokeStrengthLabel.Size = new Size(91, 15);
+            SmokeStrengthLabel.TabIndex = 7;
+            SmokeStrengthLabel.Text = "Smoke Strength";
             // 
             // EnginePpmLabel
             // 
-            this.EnginePpmLabel.AutoSize = true;
-            this.EnginePpmLabel.Location = new System.Drawing.Point(0, 24);
-            this.EnginePpmLabel.Name = "EnginePpmLabel";
-            this.EnginePpmLabel.Size = new System.Drawing.Size(71, 15);
-            this.EnginePpmLabel.TabIndex = 18;
-            this.EnginePpmLabel.Text = "Engine PPM";
+            EnginePpmLabel.AutoSize = true;
+            EnginePpmLabel.Location = new Point(0, 24);
+            EnginePpmLabel.Name = "EnginePpmLabel";
+            EnginePpmLabel.Size = new Size(71, 15);
+            EnginePpmLabel.TabIndex = 18;
+            EnginePpmLabel.Text = "Engine PPM";
             // 
             // EnginePpvLabel
             // 
-            this.EnginePpvLabel.AutoSize = true;
-            this.EnginePpvLabel.Location = new System.Drawing.Point(0, 49);
-            this.EnginePpvLabel.Name = "EnginePpvLabel";
-            this.EnginePpvLabel.Size = new System.Drawing.Size(67, 15);
-            this.EnginePpvLabel.TabIndex = 19;
-            this.EnginePpvLabel.Text = "Engine PPV";
+            EnginePpvLabel.AutoSize = true;
+            EnginePpvLabel.Location = new Point(0, 49);
+            EnginePpvLabel.Name = "EnginePpvLabel";
+            EnginePpvLabel.Size = new Size(67, 15);
+            EnginePpvLabel.TabIndex = 19;
+            EnginePpvLabel.Text = "Engine PPV";
             // 
             // EnginePpcLabel
             // 
-            this.EnginePpcLabel.AutoSize = true;
-            this.EnginePpcLabel.Location = new System.Drawing.Point(0, 74);
-            this.EnginePpcLabel.Name = "EnginePpcLabel";
-            this.EnginePpcLabel.Size = new System.Drawing.Size(68, 15);
-            this.EnginePpcLabel.TabIndex = 21;
-            this.EnginePpcLabel.Text = "Engine PPC";
+            EnginePpcLabel.AutoSize = true;
+            EnginePpcLabel.Location = new Point(0, 74);
+            EnginePpcLabel.Name = "EnginePpcLabel";
+            EnginePpcLabel.Size = new Size(68, 15);
+            EnginePpcLabel.TabIndex = 21;
+            EnginePpcLabel.Text = "Engine PPC";
             // 
             // StorageTypePanel
             // 
-            this.StorageTypePanel.Controls.Add(this.CoalRB);
-            this.StorageTypePanel.Controls.Add(this.CargoContainerRB);
-            this.StorageTypePanel.Controls.Add(this.StorageTypeLabel);
-            this.StorageTypePanel.Controls.Add(this.GenericStorageRB);
-            this.StorageTypePanel.Location = new System.Drawing.Point(10, 195);
-            this.StorageTypePanel.Name = "StorageTypePanel";
-            this.StorageTypePanel.Size = new System.Drawing.Size(220, 95);
-            this.StorageTypePanel.TabIndex = 25;
+            StorageTypePanel.Controls.Add(CoalRB);
+            StorageTypePanel.Controls.Add(CargoContainerRB);
+            StorageTypePanel.Controls.Add(StorageTypeLabel);
+            StorageTypePanel.Controls.Add(GenericStorageRB);
+            StorageTypePanel.Location = new Point(10, 195);
+            StorageTypePanel.Name = "StorageTypePanel";
+            StorageTypePanel.Size = new Size(220, 95);
+            StorageTypePanel.TabIndex = 25;
             // 
             // StorageTypeLabel
             // 
-            this.StorageTypeLabel.AutoSize = true;
-            this.StorageTypeLabel.Location = new System.Drawing.Point(73, 0);
-            this.StorageTypeLabel.Name = "StorageTypeLabel";
-            this.StorageTypeLabel.Size = new System.Drawing.Size(74, 15);
-            this.StorageTypeLabel.TabIndex = 1;
-            this.StorageTypeLabel.Text = "Storage Type";
+            StorageTypeLabel.AutoSize = true;
+            StorageTypeLabel.Location = new Point(73, 0);
+            StorageTypeLabel.Name = "StorageTypeLabel";
+            StorageTypeLabel.Size = new Size(74, 15);
+            StorageTypeLabel.TabIndex = 1;
+            StorageTypeLabel.Text = "Storage Type";
             // 
             // LaserParametersPanel
             // 
-            this.LaserParametersPanel.Controls.Add(this.MaxRechargeUD);
-            this.LaserParametersPanel.Controls.Add(this.MaxRechargeLabel);
-            this.LaserParametersPanel.Controls.Add(this.MinRechargeUD);
-            this.LaserParametersPanel.Controls.Add(this.MinRechargeLabel);
-            this.LaserParametersPanel.Controls.Add(this.CombinerCountUD);
-            this.LaserParametersPanel.Controls.Add(this.CombinerCountLabel);
-            this.LaserParametersPanel.Controls.Add(this.LaserParametersLabel);
-            this.LaserParametersPanel.Controls.Add(this.StackLengthLabel);
-            this.LaserParametersPanel.Controls.Add(this.InlineDoublersCB);
-            this.LaserParametersPanel.Controls.Add(this.StackLengthUD);
-            this.LaserParametersPanel.Controls.Add(this.StackCountUD);
-            this.LaserParametersPanel.Controls.Add(this.StackCountLabel);
-            this.LaserParametersPanel.Location = new System.Drawing.Point(10, 10);
-            this.LaserParametersPanel.Name = "LaserParametersPanel";
-            this.LaserParametersPanel.Size = new System.Drawing.Size(220, 170);
-            this.LaserParametersPanel.TabIndex = 26;
+            LaserParametersPanel.Controls.Add(MaxRechargeUD);
+            LaserParametersPanel.Controls.Add(MaxRechargeLabel);
+            LaserParametersPanel.Controls.Add(MinRechargeUD);
+            LaserParametersPanel.Controls.Add(MinRechargeLabel);
+            LaserParametersPanel.Controls.Add(CombinerCountUD);
+            LaserParametersPanel.Controls.Add(CombinerCountLabel);
+            LaserParametersPanel.Controls.Add(LaserParametersLabel);
+            LaserParametersPanel.Controls.Add(StackLengthLabel);
+            LaserParametersPanel.Controls.Add(InlineDoublersCB);
+            LaserParametersPanel.Controls.Add(StackLengthUD);
+            LaserParametersPanel.Controls.Add(StackCountUD);
+            LaserParametersPanel.Controls.Add(StackCountLabel);
+            LaserParametersPanel.Location = new Point(10, 10);
+            LaserParametersPanel.Name = "LaserParametersPanel";
+            LaserParametersPanel.Size = new Size(220, 170);
+            LaserParametersPanel.TabIndex = 26;
             // 
             // MaxRechargeLabel
             // 
-            this.MaxRechargeLabel.AutoSize = true;
-            this.MaxRechargeLabel.Location = new System.Drawing.Point(0, 149);
-            this.MaxRechargeLabel.Name = "MaxRechargeLabel";
-            this.MaxRechargeLabel.Size = new System.Drawing.Size(139, 15);
-            this.MaxRechargeLabel.TabIndex = 22;
-            this.MaxRechargeLabel.Text = "Max Recharge Time (sec)";
+            MaxRechargeLabel.AutoSize = true;
+            MaxRechargeLabel.Location = new Point(0, 149);
+            MaxRechargeLabel.Name = "MaxRechargeLabel";
+            MaxRechargeLabel.Size = new Size(139, 15);
+            MaxRechargeLabel.TabIndex = 22;
+            MaxRechargeLabel.Text = "Max Recharge Time (sec)";
             // 
             // MinRechargeLabel
             // 
-            this.MinRechargeLabel.AutoSize = true;
-            this.MinRechargeLabel.Location = new System.Drawing.Point(0, 124);
-            this.MinRechargeLabel.Name = "MinRechargeLabel";
-            this.MinRechargeLabel.Size = new System.Drawing.Size(137, 15);
-            this.MinRechargeLabel.TabIndex = 20;
-            this.MinRechargeLabel.Text = "Min Recharge Time (sec)";
+            MinRechargeLabel.AutoSize = true;
+            MinRechargeLabel.Location = new Point(0, 124);
+            MinRechargeLabel.Name = "MinRechargeLabel";
+            MinRechargeLabel.Size = new Size(137, 15);
+            MinRechargeLabel.TabIndex = 20;
+            MinRechargeLabel.Text = "Min Recharge Time (sec)";
             // 
             // CombinerCountLabel
             // 
-            this.CombinerCountLabel.AutoSize = true;
-            this.CombinerCountLabel.Location = new System.Drawing.Point(0, 99);
-            this.CombinerCountLabel.Name = "CombinerCountLabel";
-            this.CombinerCountLabel.Size = new System.Drawing.Size(96, 15);
-            this.CombinerCountLabel.TabIndex = 18;
-            this.CombinerCountLabel.Text = "Combiner Count";
+            CombinerCountLabel.AutoSize = true;
+            CombinerCountLabel.Location = new Point(0, 99);
+            CombinerCountLabel.Name = "CombinerCountLabel";
+            CombinerCountLabel.Size = new Size(96, 15);
+            CombinerCountLabel.TabIndex = 18;
+            CombinerCountLabel.Text = "Combiner Count";
             // 
             // LaserParametersLabel
             // 
-            this.LaserParametersLabel.AutoSize = true;
-            this.LaserParametersLabel.Location = new System.Drawing.Point(60, 0);
-            this.LaserParametersLabel.Name = "LaserParametersLabel";
-            this.LaserParametersLabel.Size = new System.Drawing.Size(96, 15);
-            this.LaserParametersLabel.TabIndex = 16;
-            this.LaserParametersLabel.Text = "Laser Parameters";
+            LaserParametersLabel.AutoSize = true;
+            LaserParametersLabel.Location = new Point(60, 0);
+            LaserParametersLabel.Name = "LaserParametersLabel";
+            LaserParametersLabel.Size = new Size(96, 15);
+            LaserParametersLabel.TabIndex = 16;
+            LaserParametersLabel.Text = "Laser Parameters";
             // 
             // TargetDefensesPanel
             // 
-            this.TargetDefensesPanel.Controls.Add(this.PlanarSmokeRB);
-            this.TargetDefensesPanel.Controls.Add(this.RingACRB);
-            this.TargetDefensesPanel.Controls.Add(this.TargetDefensesLabel);
-            this.TargetDefensesPanel.Controls.Add(this.PlanarSmokeUD);
-            this.TargetDefensesPanel.Controls.Add(this.TargetACLabel);
-            this.TargetDefensesPanel.Controls.Add(this.RingACUD);
-            this.TargetDefensesPanel.Controls.Add(this.TargetACUD);
-            this.TargetDefensesPanel.Controls.Add(this.SmokeStrengthUD);
-            this.TargetDefensesPanel.Controls.Add(this.SmokeStrengthLabel);
-            this.TargetDefensesPanel.Location = new System.Drawing.Point(246, 145);
-            this.TargetDefensesPanel.Name = "TargetDefensesPanel";
-            this.TargetDefensesPanel.Size = new System.Drawing.Size(220, 120);
-            this.TargetDefensesPanel.TabIndex = 27;
+            TargetDefensesPanel.Controls.Add(label1);
+            TargetDefensesPanel.Controls.Add(TargetDefensesLabel);
+            TargetDefensesPanel.Controls.Add(PlanarSmokeUD);
+            TargetDefensesPanel.Controls.Add(TargetResistanceLabel);
+            TargetDefensesPanel.Controls.Add(TargetResistanceUD);
+            TargetDefensesPanel.Controls.Add(SmokeStrengthUD);
+            TargetDefensesPanel.Controls.Add(SmokeStrengthLabel);
+            TargetDefensesPanel.Location = new Point(246, 145);
+            TargetDefensesPanel.Name = "TargetDefensesPanel";
+            TargetDefensesPanel.Size = new Size(220, 102);
+            TargetDefensesPanel.TabIndex = 27;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(0, 74);
+            label1.Name = "label1";
+            label1.Size = new Size(137, 15);
+            label1.TabIndex = 9;
+            label1.Text = "Planar Smoke Equivalent";
             // 
             // TargetDefensesLabel
             // 
-            this.TargetDefensesLabel.AutoSize = true;
-            this.TargetDefensesLabel.Location = new System.Drawing.Point(65, 0);
-            this.TargetDefensesLabel.Name = "TargetDefensesLabel";
-            this.TargetDefensesLabel.Size = new System.Drawing.Size(89, 15);
-            this.TargetDefensesLabel.TabIndex = 0;
-            this.TargetDefensesLabel.Text = "Target Defenses";
+            TargetDefensesLabel.AutoSize = true;
+            TargetDefensesLabel.Location = new Point(65, 0);
+            TargetDefensesLabel.Name = "TargetDefensesLabel";
+            TargetDefensesLabel.Size = new Size(89, 15);
+            TargetDefensesLabel.TabIndex = 0;
+            TargetDefensesLabel.Text = "Target Defenses";
             // 
             // EngineStatsPanel
             // 
-            this.EngineStatsPanel.Controls.Add(this.EngineStatsLabel);
-            this.EngineStatsPanel.Controls.Add(this.EnginePpmLabel);
-            this.EngineStatsPanel.Controls.Add(this.EnginePpmUD);
-            this.EngineStatsPanel.Controls.Add(this.EnginePpvLabel);
-            this.EngineStatsPanel.Controls.Add(this.RequiresFuelCB);
-            this.EngineStatsPanel.Controls.Add(this.EnginePpvUD);
-            this.EngineStatsPanel.Controls.Add(this.EnginePpcUD);
-            this.EngineStatsPanel.Controls.Add(this.EnginePpcLabel);
-            this.EngineStatsPanel.Location = new System.Drawing.Point(246, 10);
-            this.EngineStatsPanel.Name = "EngineStatsPanel";
-            this.EngineStatsPanel.Size = new System.Drawing.Size(220, 120);
-            this.EngineStatsPanel.TabIndex = 28;
+            EngineStatsPanel.Controls.Add(EngineStatsLabel);
+            EngineStatsPanel.Controls.Add(EnginePpmLabel);
+            EngineStatsPanel.Controls.Add(EnginePpmUD);
+            EngineStatsPanel.Controls.Add(EnginePpvLabel);
+            EngineStatsPanel.Controls.Add(RequiresFuelCB);
+            EngineStatsPanel.Controls.Add(EnginePpvUD);
+            EngineStatsPanel.Controls.Add(EnginePpcUD);
+            EngineStatsPanel.Controls.Add(EnginePpcLabel);
+            EngineStatsPanel.Location = new Point(246, 10);
+            EngineStatsPanel.Name = "EngineStatsPanel";
+            EngineStatsPanel.Size = new Size(220, 120);
+            EngineStatsPanel.TabIndex = 28;
             // 
             // EngineStatsLabel
             // 
-            this.EngineStatsLabel.AutoSize = true;
-            this.EngineStatsLabel.Location = new System.Drawing.Point(74, 0);
-            this.EngineStatsLabel.Name = "EngineStatsLabel";
-            this.EngineStatsLabel.Size = new System.Drawing.Size(71, 15);
-            this.EngineStatsLabel.TabIndex = 0;
-            this.EngineStatsLabel.Text = "Engine Stats";
+            EngineStatsLabel.AutoSize = true;
+            EngineStatsLabel.Location = new Point(74, 0);
+            EngineStatsLabel.Name = "EngineStatsLabel";
+            EngineStatsLabel.Size = new Size(71, 15);
+            EngineStatsLabel.TabIndex = 0;
+            EngineStatsLabel.Text = "Engine Stats";
             // 
             // TestParametersPanel
             // 
-            this.TestParametersPanel.Controls.Add(this.TestPerLabel3);
-            this.TestParametersPanel.Controls.Add(this.TestIntervalUD);
-            this.TestParametersPanel.Controls.Add(this.TestPerLabel2);
-            this.TestParametersPanel.Controls.Add(this.DpsPerVolumeRB);
-            this.TestParametersPanel.Controls.Add(this.TestPerLabel);
-            this.TestParametersPanel.Controls.Add(this.DpsPerCostRB);
-            this.TestParametersPanel.Controls.Add(this.TestParametersLabel);
-            this.TestParametersPanel.Controls.Add(this.RunTestsButton);
-            this.TestParametersPanel.Location = new System.Drawing.Point(10, 303);
-            this.TestParametersPanel.Name = "TestParametersPanel";
-            this.TestParametersPanel.Size = new System.Drawing.Size(456, 134);
-            this.TestParametersPanel.TabIndex = 29;
+            TestParametersPanel.Controls.Add(TestPerLabel3);
+            TestParametersPanel.Controls.Add(TestIntervalUD);
+            TestParametersPanel.Controls.Add(TestPerLabel2);
+            TestParametersPanel.Controls.Add(DpsPerVolumeRB);
+            TestParametersPanel.Controls.Add(TestPerLabel);
+            TestParametersPanel.Controls.Add(DpsPerCostRB);
+            TestParametersPanel.Controls.Add(TestParametersLabel);
+            TestParametersPanel.Controls.Add(RunTestsButton);
+            TestParametersPanel.Location = new Point(10, 303);
+            TestParametersPanel.Name = "TestParametersPanel";
+            TestParametersPanel.Size = new Size(456, 134);
+            TestParametersPanel.TabIndex = 29;
             // 
             // TestPerLabel3
             // 
-            this.TestPerLabel3.AutoSize = true;
-            this.TestPerLabel3.Location = new System.Drawing.Point(386, 45);
-            this.TestPerLabel3.Name = "TestPerLabel3";
-            this.TestPerLabel3.Size = new System.Drawing.Size(53, 15);
-            this.TestPerLabel3.TabIndex = 18;
-            this.TestPerLabel3.Text = "minutes.";
+            TestPerLabel3.AutoSize = true;
+            TestPerLabel3.Location = new Point(386, 45);
+            TestPerLabel3.Name = "TestPerLabel3";
+            TestPerLabel3.Size = new Size(53, 15);
+            TestPerLabel3.TabIndex = 18;
+            TestPerLabel3.Text = "minutes.";
             // 
             // TestPerLabel2
             // 
-            this.TestPerLabel2.AutoSize = true;
-            this.TestPerLabel2.Location = new System.Drawing.Point(245, 45);
-            this.TestPerLabel2.Name = "TestPerLabel2";
-            this.TestPerLabel2.Size = new System.Drawing.Size(102, 15);
-            this.TestPerLabel2.TabIndex = 16;
-            this.TestPerLabel2.Text = "over the course of";
+            TestPerLabel2.AutoSize = true;
+            TestPerLabel2.Location = new Point(245, 45);
+            TestPerLabel2.Name = "TestPerLabel2";
+            TestPerLabel2.Size = new Size(102, 15);
+            TestPerLabel2.TabIndex = 16;
+            TestPerLabel2.Text = "over the course of";
             // 
             // TestPerLabel
             // 
-            this.TestPerLabel.AutoSize = true;
-            this.TestPerLabel.Location = new System.Drawing.Point(0, 45);
-            this.TestPerLabel.Name = "TestPerLabel";
-            this.TestPerLabel.Size = new System.Drawing.Size(184, 15);
-            this.TestPerLabel.TabIndex = 14;
-            this.TestPerLabel.Text = "Optimize for DPS per total system";
+            TestPerLabel.AutoSize = true;
+            TestPerLabel.Location = new Point(0, 45);
+            TestPerLabel.Name = "TestPerLabel";
+            TestPerLabel.Size = new Size(184, 15);
+            TestPerLabel.TabIndex = 14;
+            TestPerLabel.Text = "Optimize for DPS per total system";
             // 
             // TestParametersLabel
             // 
-            this.TestParametersLabel.AutoSize = true;
-            this.TestParametersLabel.Location = new System.Drawing.Point(183, 0);
-            this.TestParametersLabel.Name = "TestParametersLabel";
-            this.TestParametersLabel.Size = new System.Drawing.Size(89, 15);
-            this.TestParametersLabel.TabIndex = 12;
-            this.TestParametersLabel.Text = "Test Parameters";
+            TestParametersLabel.AutoSize = true;
+            TestParametersLabel.Location = new Point(183, 0);
+            TestParametersLabel.Name = "TestParametersLabel";
+            TestParametersLabel.Size = new Size(89, 15);
+            TestParametersLabel.TabIndex = 12;
+            TestParametersLabel.Text = "Test Parameters";
             // 
             // errorProvider1
             // 
-            this.errorProvider1.ContainerControl = this;
+            errorProvider1.ContainerControl = this;
+            // 
+            // CommaDecimalCB
+            // 
+            CommaDecimalCB.AutoSize = true;
+            CommaDecimalCB.Location = new Point(246, 266);
+            CommaDecimalCB.Name = "CommaDecimalCB";
+            CommaDecimalCB.Size = new Size(168, 19);
+            CommaDecimalCB.TabIndex = 30;
+            CommaDecimalCB.Text = "Comma Decimal Separator";
+            toolTip1.SetToolTip(CommaDecimalCB, "Check if your computer displays \"five and three tenths\" as 5,3 (with a comma)");
+            CommaDecimalCB.UseVisualStyleBackColor = true;
             // 
             // Input
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(473, 444);
-            this.Controls.Add(this.EngineStatsPanel);
-            this.Controls.Add(this.TargetDefensesPanel);
-            this.Controls.Add(this.LaserParametersPanel);
-            this.Controls.Add(this.StorageTypePanel);
-            this.Controls.Add(this.TestParametersPanel);
-            this.Name = "Input";
-            this.Text = "Laser Calc";
-            ((System.ComponentModel.ISupportInitialize)(this.StackLengthUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.StackCountUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TargetACUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SmokeStrengthUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlanarSmokeUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RingACUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnginePpmUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnginePpvUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.EnginePpcUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TestIntervalUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CombinerCountUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MinRechargeUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MaxRechargeUD)).EndInit();
-            this.StorageTypePanel.ResumeLayout(false);
-            this.StorageTypePanel.PerformLayout();
-            this.LaserParametersPanel.ResumeLayout(false);
-            this.LaserParametersPanel.PerformLayout();
-            this.TargetDefensesPanel.ResumeLayout(false);
-            this.TargetDefensesPanel.PerformLayout();
-            this.EngineStatsPanel.ResumeLayout(false);
-            this.EngineStatsPanel.PerformLayout();
-            this.TestParametersPanel.ResumeLayout(false);
-            this.TestParametersPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(473, 444);
+            Controls.Add(CommaDecimalCB);
+            Controls.Add(EngineStatsPanel);
+            Controls.Add(TargetDefensesPanel);
+            Controls.Add(LaserParametersPanel);
+            Controls.Add(StorageTypePanel);
+            Controls.Add(TestParametersPanel);
+            Name = "Input";
+            Text = "Laser Calc";
+            ((System.ComponentModel.ISupportInitialize)StackLengthUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)StackCountUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)TargetResistanceUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)SmokeStrengthUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PlanarSmokeUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EnginePpmUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EnginePpvUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EnginePpcUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)TestIntervalUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)CombinerCountUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)MinRechargeUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)MaxRechargeUD).EndInit();
+            StorageTypePanel.ResumeLayout(false);
+            StorageTypePanel.PerformLayout();
+            LaserParametersPanel.ResumeLayout(false);
+            LaserParametersPanel.PerformLayout();
+            TargetDefensesPanel.ResumeLayout(false);
+            TargetDefensesPanel.PerformLayout();
+            EngineStatsPanel.ResumeLayout(false);
+            EngineStatsPanel.PerformLayout();
+            TestParametersPanel.ResumeLayout(false);
+            TestParametersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -762,15 +635,12 @@ namespace LaserCalcUI
         private System.Windows.Forms.Label StackLengthLabel;
         private System.Windows.Forms.Label StackCountLabel;
         private System.Windows.Forms.NumericUpDown StackCountUD;
-        private System.Windows.Forms.Label TargetACLabel;
-        private System.Windows.Forms.NumericUpDown TargetACUD;
+        private System.Windows.Forms.Label TargetResistanceLabel;
+        private System.Windows.Forms.NumericUpDown TargetResistanceUD;
         private System.Windows.Forms.Label SmokeStrengthLabel;
         private System.Windows.Forms.NumericUpDown SmokeStrengthUD;
         private System.Windows.Forms.NumericUpDown PlanarSmokeUD;
         private System.Windows.Forms.Button RunTestsButton;
-        private System.Windows.Forms.RadioButton PlanarSmokeRB;
-        private System.Windows.Forms.RadioButton RingACRB;
-        private System.Windows.Forms.NumericUpDown RingACUD;
         private System.Windows.Forms.CheckBox InlineDoublersCB;
         private System.Windows.Forms.NumericUpDown EnginePpmUD;
         private System.Windows.Forms.Label EnginePpmLabel;
@@ -805,6 +675,8 @@ namespace LaserCalcUI
         private System.Windows.Forms.NumericUpDown MinRechargeUD;
         private System.Windows.Forms.Label MinRechargeLabel;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private Label label1;
+        private CheckBox CommaDecimalCB;
     }
 }
 

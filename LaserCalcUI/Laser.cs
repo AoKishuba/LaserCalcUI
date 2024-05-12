@@ -3,75 +3,60 @@ using System.IO;
 
 namespace LaserCalcUI
 {
-    public class Laser
-    {
-        /// <summary>
-        /// Pumps, cavities, doublers, and destabs
-        /// </summary>
-        /// <param name="componentCounts">Quantity of each laser component, using indices from LaserComponent.AllLaserComponents</param>
-        /// <param name="doublerCount">Quantity of frequency doublers, either total or per stack (if Inline Doublers is true)</param>
-        /// <param name="inlineDoublers">True if doublers will be included in stacks</param>
-        /// <param name="stackCount">Number of parallel cavity stacks</param>
-        /// <param name="combinerCount">Number of laser combiners and LAMS nodes</param>
-        /// <param name="usesQSwitch">Whether laser uses at least one Q-switch</param>
-        /// <param name="targetEffectiveAC">Base AC + ring shield bonus, if any</param>
-        /// <param name="smokeAPMultiplier">AP Multiplier from smoke</param>
-        /// <param name="enginePpm">Engine Power Per Material</param>
-        /// <param name="enginePpv">Engine Power Per Volume</param>
-        /// <param name="enginePpc">Engine Power Per Cost (block cost of engine)</param>
-        /// <param name="requiresFuelAccess">Whether fuel access blocks are needed (for Fuel Engines or CJE)</param>
-        /// <param name="storagePerCost">Quantity of material stored per cost of storage</param>
-        /// <param name="storagePerVolume">Quantity of material stored per volume of storage</param>
-        /// <param name="testInterval">Test interval in minutes, for fuel calculations</param>
-        public Laser(
-            int[] componentCounts,
-            int doublerCount,
-            bool inlineDoublers,
-            int stackCount,
-            int combinerCount,
-            bool usesQSwitch,
-            float targetEffectiveAC,
-            float smokeAPMultiplier,
-            float enginePpm,
-            float enginePpv,
-            float enginePpc,
-            bool requiresFuelAccess,
-            float storagePerCost,
-            float storagePerVolume,
-            int testInterval
+    /// <summary>
+    /// Pumps, cavities, doublers, and destabs
+    /// </summary>
+    /// <param name="componentCounts">Quantity of each laser component, using indices from LaserComponent.AllLaserComponents</param>
+    /// <param name="doublerCount">Quantity of frequency doublers, either total or per stack (if Inline Doublers is true)</param>
+    /// <param name="inlineDoublers">True if doublers will be included in stacks</param>
+    /// <param name="stackCount">Number of parallel cavity stacks</param>
+    /// <param name="combinerCount">Number of laser combiners and LAMS nodes</param>
+    /// <param name="usesQSwitch">Whether laser uses at least one Q-switch</param>
+    /// <param name="targetResistance">Fire resistance of target block</param>
+    /// <param name="smokeIntensityMultiplier">Intensity Multiplier from smoke</param>
+    /// <param name="enginePpm">Engine Power Per Material</param>
+    /// <param name="enginePpv">Engine Power Per Volume</param>
+    /// <param name="enginePpc">Engine Power Per Cost (block cost of engine)</param>
+    /// <param name="requiresFuelAccess">Whether fuel access blocks are needed (for Fuel Engines or CJE)</param>
+    /// <param name="storagePerCost">Quantity of material stored per cost of storage</param>
+    /// <param name="storagePerVolume">Quantity of material stored per volume of storage</param>
+    /// <param name="testInterval">Test interval in minutes, for fuel calculations</param>
+    /// <param name="columnDelimiter">Used for .csv printout. ',' for period decimal countries, ';' otherwise</param>
+    public class Laser(
+        int[] componentCounts,
+        int doublerCount,
+        bool inlineDoublers,
+        int stackCount,
+        int combinerCount,
+        bool usesQSwitch,
+        float targetResistance,
+        float smokeIntensityMultiplier,
+        float enginePpm,
+        float enginePpv,
+        float enginePpc,
+        bool requiresFuelAccess,
+        float storagePerCost,
+        float storagePerVolume,
+        int testInterval,
+        char columnDelimiter
             )
-        {
-            ComponentCounts = componentCounts;
-            DoublerCount = doublerCount;
-            InlineDoublers = inlineDoublers;
-            StackCount = stackCount;
-            CombinerCount = combinerCount;
-            UsesQSwitch = usesQSwitch;
-            TargetEffectiveAC = targetEffectiveAC;
-            SmokeAPMultiplier = smokeAPMultiplier;
-            EnginePpm = enginePpm;
-            EnginePpv = enginePpv;
-            EnginePpc = enginePpc;
-            RequiresFuelAccess = requiresFuelAccess;
-            StoragePerCost = storagePerCost;
-            StoragePerVolume = storagePerVolume;
-            TestInterval = testInterval;
-        }
-        public int[] ComponentCounts { get; }
-        public int DoublerCount { get; set; }
-        public bool InlineDoublers { get; }
-        public int StackCount { get; }
-        public int CombinerCount { get; }
-        public bool UsesQSwitch { get; }
-        public float TargetEffectiveAC { get; }
-        float SmokeAPMultiplier { get; }
-        public float EnginePpm { get; }
-        public float EnginePpv { get; }
-        public float EnginePpc { get; }
-        public bool RequiresFuelAccess { get; }
-        public float StoragePerCost { get; }
-        public float StoragePerVolume { get; }
-        public int TestInterval { get; }
+    {
+        public int[] ComponentCounts { get; } = componentCounts;
+        public int DoublerCount { get; set; } = doublerCount;
+        public bool InlineDoublers { get; } = inlineDoublers;
+        public int StackCount { get; } = stackCount;
+        public int CombinerCount { get; } = combinerCount;
+        public bool UsesQSwitch { get; } = usesQSwitch;
+        public float TargetResistance { get; } = targetResistance;
+        float SmokeIntensityMultiplier { get; } = smokeIntensityMultiplier;
+        public float EnginePpm { get; } = enginePpm;
+        public float EnginePpv { get; } = enginePpv;
+        public float EnginePpc { get; } = enginePpc;
+        public bool RequiresFuelAccess { get; } = requiresFuelAccess;
+        public float StoragePerCost { get; } = storagePerCost;
+        public float StoragePerVolume { get; } = storagePerVolume;
+        public int TestInterval { get; } = testInterval;
+        char ColumnDelimiter { get; } = columnDelimiter;
 
         public int LaserCost { get; set; }
         public int LaserVolume { get; set; }
@@ -90,9 +75,9 @@ namespace LaserCalcUI
         public float FuelStorageVolume { get; set; }
         public float TotalCost { get; set; }
         public float TotalVolume { get; set; }
-        public float APMod { get; set; }
-        public float AP { get; set; }
-        public float EffectiveAP { get; set; }
+        public float IntensityMod { get; set; }
+        public float Intensity { get; set; }
+        public float EffectiveIntensity { get; set; }
         public float Dps { get; set; }
         public float DpsPerCost { get; set; }
         public float DpsPerVolume { get; set; }
@@ -110,7 +95,7 @@ namespace LaserCalcUI
             CalculateLaserVolume();
             CalculateEngineVolumeAndCost();
             CalculateFuelVolumeAndCost();
-            CalculateAPMod();
+            CalculateIntensityMod();
             CalculateDps();
         }
 
@@ -122,7 +107,7 @@ namespace LaserCalcUI
         {
             for (int i = 0; i < ComponentCounts.Length; i++)
             {
-                writer.WriteLine(LaserComponent.AllLaserComponents[i].Name + ": " + ComponentCounts[i]);
+                writer.WriteLine(LaserComponent.AllLaserComponents[i].Name + ColumnDelimiter  + ComponentCounts[i]);
             }
 
             if (UsesQSwitch)
@@ -136,41 +121,41 @@ namespace LaserCalcUI
 
             if (InlineDoublers)
             {
-                writer.WriteLine("Frequency doublers (per stack): " + DoublerCount);
+                writer.WriteLine("Frequency doublers (per stack)" + ColumnDelimiter + DoublerCount);
             }
             else
             {
-                writer.WriteLine("Frequency doublers (separate): " + DoublerCount);
+                writer.WriteLine("Frequency doublers (separate)" + ColumnDelimiter + DoublerCount);
             }
-            writer.WriteLine("Laser cost: " + LaserCost);
-            writer.WriteLine("Engine cost: " + EngineCost);
+            writer.WriteLine("Laser cost" + ColumnDelimiter + LaserCost);
+            writer.WriteLine("Engine cost" + ColumnDelimiter + EngineCost);
             if (RequiresFuelAccess)
             {
-                writer.WriteLine("Fuel access cost: " + FuelAccessCost);
+                writer.WriteLine("Fuel access cost" + ColumnDelimiter + FuelAccessCost);
             }
-            writer.WriteLine("Fuel storage cost: " + FuelStorageCost);
-            writer.WriteLine("Materials burned as fuel: " + FuelBurned);
-            writer.WriteLine("Total cost: " + TotalCost);
+            writer.WriteLine("Fuel storage cost" + ColumnDelimiter + FuelStorageCost);
+            writer.WriteLine("Materials burned as fuel" + ColumnDelimiter + FuelBurned);
+            writer.WriteLine("Total cost" + ColumnDelimiter + TotalCost);
 
-            writer.WriteLine("Laser volume: " + LaserVolume);
-            writer.WriteLine("Engine volume: " + EngineVolume);
+            writer.WriteLine("Laser volume" + ColumnDelimiter + LaserVolume);
+            writer.WriteLine("Engine volume" + ColumnDelimiter + EngineVolume);
             if (RequiresFuelAccess)
             {
-                writer.WriteLine("Fuel access volume: " + FuelAccessVolume);
+                writer.WriteLine("Fuel access volume" + ColumnDelimiter + FuelAccessVolume);
             }
-            writer.WriteLine("Fuel storage volume: " + FuelStorageVolume);
-            writer.WriteLine("Total volume: " + TotalVolume);
+            writer.WriteLine("Fuel storage volume" + ColumnDelimiter + FuelStorageVolume);
+            writer.WriteLine("Total volume" + ColumnDelimiter + TotalVolume);
 
-            writer.WriteLine("Engine power: " + EnginePower);
-            writer.WriteLine("Energy recharge/sec: " + RechargeRate);
-            writer.WriteLine("Energy storage: " + EnergyStorage);
-            writer.WriteLine("Recharge time (sec): " + RechargeTime);
-            writer.WriteLine("Energy discharge/sec: " + DischargeRate);
-            writer.WriteLine("Base AP: " + AP);
-            writer.WriteLine("AP after smoke: " + EffectiveAP);
-            writer.WriteLine("Sustained damage per second: " + Dps);
-            writer.WriteLine("DPS per cost: " + DpsPerCost);
-            writer.WriteLine("DPS per volume: " + DpsPerVolume);
+            writer.WriteLine("Engine power" + ColumnDelimiter + EnginePower);
+            writer.WriteLine("Energy recharge/sec" + ColumnDelimiter + RechargeRate);
+            writer.WriteLine("Energy storage" + ColumnDelimiter + EnergyStorage);
+            writer.WriteLine("Recharge time (sec)" + ColumnDelimiter + RechargeTime);
+            writer.WriteLine("Energy discharge/sec" + ColumnDelimiter + DischargeRate);
+            writer.WriteLine("Base Intensity" + ColumnDelimiter + Intensity);
+            writer.WriteLine("Intensity after smoke" + ColumnDelimiter + EffectiveIntensity);
+            writer.WriteLine("Sustained damage per second" + ColumnDelimiter + Dps);
+            writer.WriteLine("DPS per cost" + ColumnDelimiter + DpsPerCost);
+            writer.WriteLine("DPS per volume" + ColumnDelimiter + DpsPerVolume);
         }
 
         /// <summary>
@@ -197,8 +182,8 @@ namespace LaserCalcUI
             }
 
             PumpVolume *= StackCount;
-            RechargeRate = PumpVolume * 24;
-            EnginePower = RechargeRate * 1.25f;
+            RechargeRate = PumpVolume * 12;
+            EnginePower = PumpVolume *  30;
         }
 
         /// <summary>
@@ -211,11 +196,11 @@ namespace LaserCalcUI
 
 
         /// <summary>
-        /// Calculate AP modifier from storage and pump volume
+        /// Calculate Intensity modifier from storage and pump volume
         /// </summary>
-        void CalculateAPMod()
+        void CalculateIntensityMod()
         {
-            APMod = PumpVolume + EnergyStorage / 10000f;
+            IntensityMod = PumpVolume + EnergyStorage / 10_000f;
         }
 
         /// <summary>
@@ -232,7 +217,8 @@ namespace LaserCalcUI
                     destabIndex = i;
                 }
             }
-            float dischargeMultiplier = 1f - MathF.Pow(1f - 0.1f, ComponentCounts[destabIndex] + 1f);
+            // multiplier = 1 - (1 - regulator setting [default 0.1])^(#destabs + 1)
+            float dischargeMultiplier = 1f - MathF.Pow(0.9f, ComponentCounts[destabIndex] + 1f);
 
             DischargeRate = EnergyStorage * dischargeMultiplier * CombinerCount;
         }
@@ -310,7 +296,7 @@ namespace LaserCalcUI
         }
 
         /// <summary>
-        /// Calculate armour pierce and damage per second
+        /// Calculate intensity and damage per second
         /// </summary>
         void CalculateDps()
         {
@@ -318,17 +304,16 @@ namespace LaserCalcUI
                 ? DoublerCount
                 : DoublerCount * StackCount;
 
-            AP = UsesQSwitch
-                ? 40f + totalDoublerCount / APMod * 100f
-                : 60f + totalDoublerCount / APMod * 150f;
+            Intensity = UsesQSwitch
+                ? 40f + totalDoublerCount / IntensityMod * 100f
+                : 60f + totalDoublerCount / IntensityMod * 150f;
 
-            // 27 smoke strength = 100% power
-            EffectiveAP = AP * SmokeAPMultiplier;
+            EffectiveIntensity = Intensity * SmokeIntensityMultiplier;
 
             float outputRate = MathF.Min(RechargeRate, DischargeRate);
-            Dps = EffectiveAP >= TargetEffectiveAC
+            Dps = EffectiveIntensity >= TargetResistance
                 ? outputRate
-                : outputRate * EffectiveAP / TargetEffectiveAC;
+                : outputRate * EffectiveIntensity / TargetResistance;
 
             if (!UsesQSwitch)
             {

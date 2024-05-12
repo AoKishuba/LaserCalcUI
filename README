@@ -5,11 +5,13 @@ For update notifications and useful links to my other documents, join my
 Discord repository server: https://discord.gg/B7RrpZAA
 
 ---- HOW TO RUN ----
+This package requires .NET 8.0 to run.
+https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 If running from the downloaded .zip file, run the executable "LaserCalcUI".
 The link to download is available in my Discord repository, linked above.
 
 ---- TEST PARAMETERS ----
-NOTE: Results for each test will be written to a text file in the LaserCalcUI
+NOTE: Results for each test will be written to a .csv file in the LaserCalcUI
 folder. Filenames are automatically generated from current time. An example
 filename is "2021-07-04_09-12-11-12".
 
@@ -38,23 +40,16 @@ block cost (in the stats tab)
 Requires Fuel Access: Indicates engine will require fuel beams for access.
 Check if using fuel engine or CJE.
 
-Target AC: Base AC of target block. Note that laser damage ignores stacking.
+Target Resistance: Fire resistance of target block.
 
 Smoke Strength: Strength of smoke between laser and target. 1 full-strength
 smoke dispenser = 25,000 smoke strength.
 
 Planar Smoke Equivalent: Planar Shield Smoke equivalent, as shown ingame.
 
-Ring Shield AC Bonus: AC bonus from ring shield. Note that Planar shield 
-projectors and ring shields are mutually exclusive.
-
 Test for cost/volume: Whether to compare damage per total system cost or 
 volume. Includes laser components, materials burned as fuel, storage, fuel
 access, and engine.
-
-
-
-
 
 ---- OPTIMIZER OUTPUT ----
 The optimizer output always begins with the test parameters entered by the 
@@ -88,9 +83,9 @@ Recharge time (sec): Time to charge laser cavities from empty to full.
 
 Energy discharge/sec: Laser energy released per second. Assumes regulator.
 
-Base AP: Base Armour Pierce rating of laser.
+Base Intensity: Intensity rating of laser.
 
-AP after smoke: AP after applying smoke penalty.
+intensity after smoke: Effective Intensity after applying smoke penalty.
 
 Sustained damage per second: Laser damage per second. Uses discharge rate or 
 recharge rate, whichever is lower.

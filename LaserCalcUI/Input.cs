@@ -17,18 +17,6 @@ namespace LaserCalcUI
             InitializeComponent();
         }
 
-        private void PlanarSmokeRB_CheckedChanged(object sender, EventArgs e)
-        {
-            PlanarSmokeUD.Enabled = PlanarSmokeRB.Checked;
-            RingACUD.Enabled = !PlanarSmokeRB.Checked;
-        }
-
-        private void RingACRB_CheckedChanged(object sender, EventArgs e)
-        {
-            RingACUD.Enabled = RingACRB.Checked;
-            PlanarSmokeUD.Enabled = !RingACRB.Checked;
-        }
-
         private void MinRechargeUD_ValueChanged(object sender, EventArgs e)
         {
             MaxRechargeUD.Value = Math.Max(MaxRechargeUD.Value, MinRechargeUD.Value);
@@ -80,13 +68,9 @@ namespace LaserCalcUI
                     ? TestType.DpsPerCost
                     : TestType.DpsPerVolume;
 
-                float ringACBonus = RingACRB.Checked
-                    ? (float)RingACUD.Value
-                    : 0;
+                int planarSmokeStrength = (int)PlanarSmokeUD.Value;
 
-                int planarSmokeStrength = PlanarSmokeRB.Checked
-                    ? (int)PlanarSmokeUD.Value
-                    : 0;
+                char columnDelimiter = CommaDecimalCB.Checked ? ';' : ',';
 
                 LaserComparer comparer = new(
                     (int)StackLengthUD.Value,
@@ -95,8 +79,7 @@ namespace LaserCalcUI
                     (int)CombinerCountUD.Value,
                     (int)MinRechargeUD.Value,
                     (int)MaxRechargeUD.Value,
-                    (float)TargetACUD.Value,
-                    ringACBonus,
+                    (float)TargetResistanceUD.Value,
                     (int)SmokeStrengthUD.Value,
                     planarSmokeStrength,
                     (float)EnginePpmUD.Value,
@@ -106,7 +89,8 @@ namespace LaserCalcUI
                     storagePerCost,
                     storagePerVolume,
                     toCompare,
-                    (int)TestIntervalUD.Value
+                    (int)TestIntervalUD.Value,
+                    columnDelimiter
                     );
 
 
