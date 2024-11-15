@@ -249,25 +249,29 @@ namespace LaserCalcUI
                 });
 
                 //Find best configuration in bag
+
                 if (VariableToCompare == TestType.DpsPerVolume)
                 {
                     foreach (Laser rawLaser in LaserBag)
                     {
-                        if (rawLaser.DpsPerVolume > qSwitched.DpsPerVolume
-                            || (rawLaser.DpsPerVolume == qSwitched.DpsPerVolume && rawLaser.DpsPerCost > qSwitched.DpsPerCost)
-                            && rawLaser.RechargeTime >= MinRechargeTime
-                            && rawLaser.RechargeTime <= MaxRechargeTime
-                            && rawLaser.UsesQSwitch)
+                        if (rawLaser.RechargeTime <= MaxRechargeTime
+                            && rawLaser.RechargeTime >= MinRechargeTime)
                         {
-                            qSwitched = rawLaser;
-                        }
-                        else if (rawLaser.DpsPerVolume > zeroQ.DpsPerVolume
-                            || (rawLaser.DpsPerVolume == zeroQ.DpsPerVolume && rawLaser.DpsPerCost > zeroQ.DpsPerCost)
-                            && rawLaser.RechargeTime >= MinRechargeTime
-                            && rawLaser.RechargeTime <= MaxRechargeTime
-                            && !rawLaser.UsesQSwitch)
-                        {
-                            zeroQ = rawLaser;
+                            if (rawLaser.UsesQSwitch)
+                            {
+                                if (rawLaser.DpsPerVolume > qSwitched.DpsPerVolume
+                                    || (rawLaser.DpsPerVolume == qSwitched.DpsPerVolume
+                                        && rawLaser.DpsPerCost > qSwitched.DpsPerCost))
+                                {
+                                    qSwitched = rawLaser;
+                                }
+                            }
+                            else if (rawLaser.DpsPerVolume > zeroQ.DpsPerVolume
+                                || (rawLaser.DpsPerVolume == zeroQ.DpsPerVolume
+                                    && rawLaser.DpsPerCost > qSwitched.DpsPerCost))
+                            {
+                                zeroQ = rawLaser;
+                            }
                         }
                     }
                 }
@@ -275,21 +279,24 @@ namespace LaserCalcUI
                 {
                     foreach (Laser rawLaser in LaserBag)
                     {
-                        if (rawLaser.DpsPerCost > qSwitched.DpsPerCost
-                            || (rawLaser.DpsPerCost == qSwitched.DpsPerCost && rawLaser.DpsPerVolume > qSwitched.DpsPerVolume)
-                            && rawLaser.RechargeTime >= MinRechargeTime
-                            && rawLaser.RechargeTime <= MaxRechargeTime
-                            && rawLaser.UsesQSwitch)
+                        if (rawLaser.RechargeTime <= MaxRechargeTime
+                            && rawLaser.RechargeTime >= MinRechargeTime)
                         {
-                            qSwitched = rawLaser;
-                        }
-                        else if (rawLaser.DpsPerCost > zeroQ.DpsPerCost
-                            || (rawLaser.DpsPerCost == zeroQ.DpsPerCost && rawLaser.DpsPerVolume > zeroQ.DpsPerVolume)
-                            && rawLaser.RechargeTime >= MinRechargeTime
-                            && rawLaser.RechargeTime <= MaxRechargeTime
-                            && !rawLaser.UsesQSwitch)
-                        {
-                            zeroQ = rawLaser;
+                            if (rawLaser.UsesQSwitch)
+                            {
+                                if (rawLaser.DpsPerCost > qSwitched.DpsPerCost
+                                    || (rawLaser.DpsPerCost == qSwitched.DpsPerCost
+                                        && rawLaser.DpsPerVolume > qSwitched.DpsPerVolume))
+                                {
+                                    qSwitched = rawLaser;
+                                }
+                            }
+                            else if (rawLaser.DpsPerCost > zeroQ.DpsPerCost
+                                || (rawLaser.DpsPerCost == zeroQ.DpsPerCost
+                                    && rawLaser.DpsPerVolume > zeroQ.DpsPerVolume))
+                            {
+                                zeroQ = rawLaser;
+                            }
                         }
                     }
                 }
