@@ -319,6 +319,7 @@ namespace LaserCalcUI
             {
                 writer.WriteLine("Doublers separate from stacks");
             }
+            writer.WriteLine("Combiner count" + ColumnDelimiter + CombinerCount);
             writer.WriteLine("Min recharge time (sec)" + ColumnDelimiter + MinRechargeTime);
             writer.WriteLine("Max recharge time (sec)" + ColumnDelimiter + MaxRechargeTime);
             writer.WriteLine("Target fire resistance" + ColumnDelimiter + TargetResistance);
