@@ -135,6 +135,8 @@ namespace LaserCalcUI
 
                             for (int comp5Count = 0; comp5Count <= MaxStackLength - totalCount; comp5Count++)
                             {
+                                totalCount = comp0Count + comp1Count + comp2Count + comp3Count + comp4Count + comp5Count;
+
                                 for (int comp6Count = 0; comp6Count <= MaxStackLength - totalCount; comp6Count++)
                                 {
                                     int maxDoublerCount;
