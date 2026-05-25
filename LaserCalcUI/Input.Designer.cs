@@ -30,12 +30,12 @@ namespace LaserCalcUI
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Input));
             StackLengthUD = new NumericUpDown();
             StackLengthLabel = new Label();
             StackCountLabel = new Label();
             StackCountUD = new NumericUpDown();
-            TargetResistanceLabel = new Label();
-            TargetResistanceUD = new NumericUpDown();
+            ResistanceLabel = new Label();
             toolTip1 = new ToolTip(components);
             SmokeStrengthUD = new NumericUpDown();
             PlanarSmokeUD = new NumericUpDown();
@@ -54,6 +54,13 @@ namespace LaserCalcUI
             CombinerCountUD = new NumericUpDown();
             MinRechargeUD = new NumericUpDown();
             MaxRechargeUD = new NumericUpDown();
+            CommaDecimalCB = new CheckBox();
+            QSwitchCountUD = new NumericUpDown();
+            PendepthCB = new CheckBox();
+            ResistanceDD = new ComboBox();
+            ArmorLayerDD = new ComboBox();
+            AddLayerButton = new Button();
+            DeleteLayerButton = new Button();
             SmokeStrengthLabel = new Label();
             EnginePpmLabel = new Label();
             EnginePpvLabel = new Label();
@@ -66,7 +73,7 @@ namespace LaserCalcUI
             CombinerCountLabel = new Label();
             LaserParametersLabel = new Label();
             TargetDefensesPanel = new Panel();
-            label1 = new Label();
+            PlanarSmokeLabel = new Label();
             TargetDefensesLabel = new Label();
             EngineStatsPanel = new Panel();
             EngineStatsLabel = new Label();
@@ -76,10 +83,16 @@ namespace LaserCalcUI
             TestPerLabel = new Label();
             TestParametersLabel = new Label();
             errorProvider1 = new ErrorProvider(components);
-            CommaDecimalCB = new CheckBox();
+            QSwitchCountPanel = new Panel();
+            QSwitchCountLabel = new Label();
+            TestQSwitchedCB = new CheckBox();
+            TestZeroQCB = new CheckBox();
+            QSwitchCountPanelLabel = new Label();
+            TargetSchemePanel = new Panel();
+            LayerLB = new ListBox();
+            TargetSchemeLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)StackLengthUD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StackCountUD).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)TargetResistanceUD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SmokeStrengthUD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PlanarSmokeUD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EnginePpmUD).BeginInit();
@@ -89,12 +102,15 @@ namespace LaserCalcUI
             ((System.ComponentModel.ISupportInitialize)CombinerCountUD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)MinRechargeUD).BeginInit();
             ((System.ComponentModel.ISupportInitialize)MaxRechargeUD).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)QSwitchCountUD).BeginInit();
             StorageTypePanel.SuspendLayout();
             LaserParametersPanel.SuspendLayout();
             TargetDefensesPanel.SuspendLayout();
             EngineStatsPanel.SuspendLayout();
             TestParametersPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            QSwitchCountPanel.SuspendLayout();
+            TargetSchemePanel.SuspendLayout();
             SuspendLayout();
             // 
             // StackLengthUD
@@ -106,7 +122,7 @@ namespace LaserCalcUI
             StackLengthUD.Size = new Size(60, 23);
             StackLengthUD.TabIndex = 0;
             StackLengthUD.TextAlign = HorizontalAlignment.Right;
-            toolTip1.SetToolTip(StackLengthUD, "Max number of laser components in series");
+            toolTip1.SetToolTip(StackLengthUD, "Max number of laser components in series.\r\nDoes not include connectors or combiners.");
             StackLengthUD.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // StackLengthLabel
@@ -138,27 +154,14 @@ namespace LaserCalcUI
             toolTip1.SetToolTip(StackCountUD, "Number of parallel stacks of laser components");
             StackCountUD.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // TargetResistanceLabel
+            // ResistanceLabel
             // 
-            TargetResistanceLabel.AutoSize = true;
-            TargetResistanceLabel.Location = new Point(0, 24);
-            TargetResistanceLabel.Name = "TargetResistanceLabel";
-            TargetResistanceLabel.Size = new Size(119, 15);
-            TargetResistanceLabel.TabIndex = 5;
-            TargetResistanceLabel.Text = "Target Fire Resistance";
-            // 
-            // TargetResistanceUD
-            // 
-            TargetResistanceUD.DecimalPlaces = 1;
-            TargetResistanceUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            TargetResistanceUD.Location = new Point(155, 20);
-            TargetResistanceUD.Minimum = new decimal(new int[] { 1, 0, 0, 65536 });
-            TargetResistanceUD.Name = "TargetResistanceUD";
-            TargetResistanceUD.Size = new Size(60, 23);
-            TargetResistanceUD.TabIndex = 4;
-            TargetResistanceUD.TextAlign = HorizontalAlignment.Right;
-            toolTip1.SetToolTip(TargetResistanceUD, "Target Fire Resistance.");
-            TargetResistanceUD.Value = new decimal(new int[] { 40, 0, 0, 0 });
+            ResistanceLabel.AutoSize = true;
+            ResistanceLabel.Location = new Point(0, 24);
+            ResistanceLabel.Name = "ResistanceLabel";
+            ResistanceLabel.Size = new Size(84, 15);
+            ResistanceLabel.TabIndex = 5;
+            ResistanceLabel.Text = "Fire Resistance";
             // 
             // SmokeStrengthUD
             // 
@@ -168,6 +171,7 @@ namespace LaserCalcUI
             SmokeStrengthUD.Size = new Size(60, 23);
             SmokeStrengthUD.TabIndex = 6;
             SmokeStrengthUD.TextAlign = HorizontalAlignment.Right;
+            SmokeStrengthUD.ThousandsSeparator = true;
             toolTip1.SetToolTip(SmokeStrengthUD, "Target smoke strength.\r\n1 full-strength smoke dispenser = 25,000 strength\r\nMax 250,000 (10 full-strength dispensers)");
             // 
             // PlanarSmokeUD
@@ -178,16 +182,19 @@ namespace LaserCalcUI
             PlanarSmokeUD.Size = new Size(60, 23);
             PlanarSmokeUD.TabIndex = 8;
             PlanarSmokeUD.TextAlign = HorizontalAlignment.Right;
+            PlanarSmokeUD.ThousandsSeparator = true;
             toolTip1.SetToolTip(PlanarSmokeUD, "Target planar shield smoke strength equivalent.\r\nMax 1500");
             // 
             // EnginePpmUD
             // 
             EnginePpmUD.Location = new Point(155, 20);
             EnginePpmUD.Maximum = new decimal(new int[] { 1500, 0, 0, 0 });
+            EnginePpmUD.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             EnginePpmUD.Name = "EnginePpmUD";
             EnginePpmUD.Size = new Size(60, 23);
             EnginePpmUD.TabIndex = 17;
             EnginePpmUD.TextAlign = HorizontalAlignment.Right;
+            EnginePpmUD.ThousandsSeparator = true;
             toolTip1.SetToolTip(EnginePpmUD, "Engine Power Per Material");
             EnginePpmUD.Value = new decimal(new int[] { 600, 0, 0, 0 });
             // 
@@ -197,6 +204,7 @@ namespace LaserCalcUI
             EnginePpvUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
             EnginePpvUD.Location = new Point(155, 45);
             EnginePpvUD.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
+            EnginePpvUD.Minimum = new decimal(new int[] { 1, 0, 0, 65536 });
             EnginePpvUD.Name = "EnginePpvUD";
             EnginePpvUD.Size = new Size(60, 23);
             EnginePpvUD.TabIndex = 20;
@@ -210,6 +218,7 @@ namespace LaserCalcUI
             EnginePpcUD.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
             EnginePpcUD.Location = new Point(155, 70);
             EnginePpcUD.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
+            EnginePpcUD.Minimum = new decimal(new int[] { 1, 0, 0, 65536 });
             EnginePpcUD.Name = "EnginePpcUD";
             EnginePpcUD.Size = new Size(60, 23);
             EnginePpcUD.TabIndex = 22;
@@ -355,6 +364,84 @@ namespace LaserCalcUI
             MaxRechargeUD.Value = new decimal(new int[] { 15, 0, 0, 0 });
             MaxRechargeUD.ValueChanged += MaxRechargeUD_ValueChanged;
             // 
+            // CommaDecimalCB
+            // 
+            CommaDecimalCB.AutoSize = true;
+            CommaDecimalCB.Location = new Point(255, 505);
+            CommaDecimalCB.Name = "CommaDecimalCB";
+            CommaDecimalCB.Size = new Size(168, 19);
+            CommaDecimalCB.TabIndex = 30;
+            CommaDecimalCB.Text = "Comma Decimal Separator";
+            toolTip1.SetToolTip(CommaDecimalCB, "Check if your computer displays \"five and three tenths\" as 5,3 (with a comma)");
+            CommaDecimalCB.UseVisualStyleBackColor = true;
+            // 
+            // QSwitchCountUD
+            // 
+            QSwitchCountUD.Location = new Point(106, 41);
+            QSwitchCountUD.Maximum = new decimal(new int[] { 4, 0, 0, 0 });
+            QSwitchCountUD.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            QSwitchCountUD.Name = "QSwitchCountUD";
+            QSwitchCountUD.Size = new Size(35, 23);
+            QSwitchCountUD.TabIndex = 10;
+            QSwitchCountUD.TextAlign = HorizontalAlignment.Right;
+            QSwitchCountUD.ThousandsSeparator = true;
+            toolTip1.SetToolTip(QSwitchCountUD, "Number of Q-Switches to test");
+            QSwitchCountUD.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // PendepthCB
+            // 
+            PendepthCB.AutoSize = true;
+            PendepthCB.Location = new Point(295, 127);
+            PendepthCB.Name = "PendepthCB";
+            PendepthCB.Size = new Size(120, 19);
+            PendepthCB.TabIndex = 32;
+            PendepthCB.Text = "Require Pendepth";
+            toolTip1.SetToolTip(PendepthCB, resources.GetString("PendepthCB.ToolTip"));
+            PendepthCB.UseVisualStyleBackColor = true;
+            PendepthCB.CheckedChanged += PendepthCB_CheckedChanged;
+            // 
+            // ResistanceDD
+            // 
+            ResistanceDD.DropDownStyle = ComboBoxStyle.DropDownList;
+            ResistanceDD.FormattingEnabled = true;
+            ResistanceDD.Location = new Point(94, 20);
+            ResistanceDD.Name = "ResistanceDD";
+            ResistanceDD.Size = new Size(121, 23);
+            ResistanceDD.TabIndex = 10;
+            toolTip1.SetToolTip(ResistanceDD, "Target fire resistance.");
+            // 
+            // ArmorLayerDD
+            // 
+            ArmorLayerDD.DropDownStyle = ComboBoxStyle.DropDownList;
+            ArmorLayerDD.FormattingEnabled = true;
+            ArmorLayerDD.Location = new Point(6, 18);
+            ArmorLayerDD.Name = "ArmorLayerDD";
+            ArmorLayerDD.Size = new Size(200, 23);
+            ArmorLayerDD.TabIndex = 11;
+            toolTip1.SetToolTip(ArmorLayerDD, "Select an armor type to add to target armor scheme.");
+            // 
+            // AddLayerButton
+            // 
+            AddLayerButton.Location = new Point(6, 47);
+            AddLayerButton.Name = "AddLayerButton";
+            AddLayerButton.Size = new Size(75, 23);
+            AddLayerButton.TabIndex = 12;
+            AddLayerButton.Text = "Add";
+            toolTip1.SetToolTip(AddLayerButton, "Add selected layer to list.");
+            AddLayerButton.UseVisualStyleBackColor = true;
+            AddLayerButton.Click += AddLayerButton_Click;
+            // 
+            // DeleteLayerButton
+            // 
+            DeleteLayerButton.Location = new Point(131, 47);
+            DeleteLayerButton.Name = "DeleteLayerButton";
+            DeleteLayerButton.Size = new Size(75, 23);
+            DeleteLayerButton.TabIndex = 13;
+            DeleteLayerButton.Text = "Delete";
+            toolTip1.SetToolTip(DeleteLayerButton, "Remove most recently added layer");
+            DeleteLayerButton.UseVisualStyleBackColor = true;
+            DeleteLayerButton.Click += DeleteLayerButton_Click;
+            // 
             // SmokeStrengthLabel
             // 
             SmokeStrengthLabel.AutoSize = true;
@@ -407,7 +494,7 @@ namespace LaserCalcUI
             StorageTypeLabel.AutoSize = true;
             StorageTypeLabel.Location = new Point(73, 0);
             StorageTypeLabel.Name = "StorageTypeLabel";
-            StorageTypeLabel.Size = new Size(74, 15);
+            StorageTypeLabel.Size = new Size(75, 15);
             StorageTypeLabel.TabIndex = 1;
             StorageTypeLabel.Text = "Storage Type";
             // 
@@ -444,7 +531,7 @@ namespace LaserCalcUI
             MinRechargeLabel.AutoSize = true;
             MinRechargeLabel.Location = new Point(0, 124);
             MinRechargeLabel.Name = "MinRechargeLabel";
-            MinRechargeLabel.Size = new Size(137, 15);
+            MinRechargeLabel.Size = new Size(138, 15);
             MinRechargeLabel.TabIndex = 20;
             MinRechargeLabel.Text = "Min Recharge Time (sec)";
             // 
@@ -468,33 +555,33 @@ namespace LaserCalcUI
             // 
             // TargetDefensesPanel
             // 
-            TargetDefensesPanel.Controls.Add(label1);
+            TargetDefensesPanel.Controls.Add(ResistanceDD);
+            TargetDefensesPanel.Controls.Add(PlanarSmokeLabel);
             TargetDefensesPanel.Controls.Add(TargetDefensesLabel);
             TargetDefensesPanel.Controls.Add(PlanarSmokeUD);
-            TargetDefensesPanel.Controls.Add(TargetResistanceLabel);
-            TargetDefensesPanel.Controls.Add(TargetResistanceUD);
+            TargetDefensesPanel.Controls.Add(ResistanceLabel);
             TargetDefensesPanel.Controls.Add(SmokeStrengthUD);
             TargetDefensesPanel.Controls.Add(SmokeStrengthLabel);
-            TargetDefensesPanel.Location = new Point(246, 145);
+            TargetDefensesPanel.Location = new Point(246, 10);
             TargetDefensesPanel.Name = "TargetDefensesPanel";
             TargetDefensesPanel.Size = new Size(220, 102);
             TargetDefensesPanel.TabIndex = 27;
             // 
-            // label1
+            // PlanarSmokeLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(0, 74);
-            label1.Name = "label1";
-            label1.Size = new Size(137, 15);
-            label1.TabIndex = 9;
-            label1.Text = "Planar Smoke Equivalent";
+            PlanarSmokeLabel.AutoSize = true;
+            PlanarSmokeLabel.Location = new Point(0, 74);
+            PlanarSmokeLabel.Name = "PlanarSmokeLabel";
+            PlanarSmokeLabel.Size = new Size(137, 15);
+            PlanarSmokeLabel.TabIndex = 9;
+            PlanarSmokeLabel.Text = "Planar Smoke Equivalent";
             // 
             // TargetDefensesLabel
             // 
             TargetDefensesLabel.AutoSize = true;
             TargetDefensesLabel.Location = new Point(65, 0);
             TargetDefensesLabel.Name = "TargetDefensesLabel";
-            TargetDefensesLabel.Size = new Size(89, 15);
+            TargetDefensesLabel.Size = new Size(90, 15);
             TargetDefensesLabel.TabIndex = 0;
             TargetDefensesLabel.Text = "Target Defenses";
             // 
@@ -508,7 +595,7 @@ namespace LaserCalcUI
             EngineStatsPanel.Controls.Add(EnginePpvUD);
             EngineStatsPanel.Controls.Add(EnginePpcUD);
             EngineStatsPanel.Controls.Add(EnginePpcLabel);
-            EngineStatsPanel.Location = new Point(246, 10);
+            EngineStatsPanel.Location = new Point(10, 393);
             EngineStatsPanel.Name = "EngineStatsPanel";
             EngineStatsPanel.Size = new Size(220, 120);
             EngineStatsPanel.TabIndex = 28;
@@ -532,7 +619,7 @@ namespace LaserCalcUI
             TestParametersPanel.Controls.Add(DpsPerCostRB);
             TestParametersPanel.Controls.Add(TestParametersLabel);
             TestParametersPanel.Controls.Add(RunTestsButton);
-            TestParametersPanel.Location = new Point(10, 303);
+            TestParametersPanel.Location = new Point(10, 529);
             TestParametersPanel.Name = "TestParametersPanel";
             TestParametersPanel.Size = new Size(456, 134);
             TestParametersPanel.TabIndex = 29;
@@ -569,7 +656,7 @@ namespace LaserCalcUI
             TestParametersLabel.AutoSize = true;
             TestParametersLabel.Location = new Point(183, 0);
             TestParametersLabel.Name = "TestParametersLabel";
-            TestParametersLabel.Size = new Size(89, 15);
+            TestParametersLabel.Size = new Size(90, 15);
             TestParametersLabel.TabIndex = 12;
             TestParametersLabel.Text = "Test Parameters";
             // 
@@ -577,22 +664,99 @@ namespace LaserCalcUI
             // 
             errorProvider1.ContainerControl = this;
             // 
-            // CommaDecimalCB
+            // QSwitchCountPanel
             // 
-            CommaDecimalCB.AutoSize = true;
-            CommaDecimalCB.Location = new Point(246, 266);
-            CommaDecimalCB.Name = "CommaDecimalCB";
-            CommaDecimalCB.Size = new Size(168, 19);
-            CommaDecimalCB.TabIndex = 30;
-            CommaDecimalCB.Text = "Comma Decimal Separator";
-            toolTip1.SetToolTip(CommaDecimalCB, "Check if your computer displays \"five and three tenths\" as 5,3 (with a comma)");
-            CommaDecimalCB.UseVisualStyleBackColor = true;
+            QSwitchCountPanel.Controls.Add(QSwitchCountLabel);
+            QSwitchCountPanel.Controls.Add(TestQSwitchedCB);
+            QSwitchCountPanel.Controls.Add(QSwitchCountUD);
+            QSwitchCountPanel.Controls.Add(TestZeroQCB);
+            QSwitchCountPanel.Controls.Add(QSwitchCountPanelLabel);
+            QSwitchCountPanel.Location = new Point(10, 306);
+            QSwitchCountPanel.Name = "QSwitchCountPanel";
+            QSwitchCountPanel.Size = new Size(220, 71);
+            QSwitchCountPanel.TabIndex = 26;
+            // 
+            // QSwitchCountLabel
+            // 
+            QSwitchCountLabel.AutoSize = true;
+            QSwitchCountLabel.Location = new Point(143, 45);
+            QSwitchCountLabel.Name = "QSwitchCountLabel";
+            QSwitchCountLabel.Size = new Size(75, 15);
+            QSwitchCountLabel.TabIndex = 33;
+            QSwitchCountLabel.Text = "Q-Switch(es)";
+            // 
+            // TestQSwitchedCB
+            // 
+            TestQSwitchedCB.AutoSize = true;
+            TestQSwitchedCB.Checked = true;
+            TestQSwitchedCB.CheckState = CheckState.Checked;
+            TestQSwitchedCB.Location = new Point(0, 45);
+            TestQSwitchedCB.Name = "TestQSwitchedCB";
+            TestQSwitchedCB.Size = new Size(105, 19);
+            TestQSwitchedCB.TabIndex = 32;
+            TestQSwitchedCB.Text = "Test lasers with";
+            TestQSwitchedCB.UseVisualStyleBackColor = true;
+            TestQSwitchedCB.CheckedChanged += TestQSwitchedCB_CheckedChanged;
+            // 
+            // TestZeroQCB
+            // 
+            TestZeroQCB.AutoSize = true;
+            TestZeroQCB.Location = new Point(0, 20);
+            TestZeroQCB.Name = "TestZeroQCB";
+            TestZeroQCB.Size = new Size(177, 19);
+            TestZeroQCB.TabIndex = 31;
+            TestZeroQCB.Text = "Test lasers with 0 Q-Switches";
+            TestZeroQCB.UseVisualStyleBackColor = true;
+            TestZeroQCB.CheckedChanged += TestZeroQCB_CheckedChanged;
+            // 
+            // QSwitchCountPanelLabel
+            // 
+            QSwitchCountPanelLabel.AutoSize = true;
+            QSwitchCountPanelLabel.Location = new Point(73, 0);
+            QSwitchCountPanelLabel.Name = "QSwitchCountPanelLabel";
+            QSwitchCountPanelLabel.Size = new Size(67, 15);
+            QSwitchCountPanelLabel.TabIndex = 1;
+            QSwitchCountPanelLabel.Text = "Q-Switches";
+            // 
+            // TargetSchemePanel
+            // 
+            TargetSchemePanel.Controls.Add(LayerLB);
+            TargetSchemePanel.Controls.Add(DeleteLayerButton);
+            TargetSchemePanel.Controls.Add(AddLayerButton);
+            TargetSchemePanel.Controls.Add(ArmorLayerDD);
+            TargetSchemePanel.Controls.Add(TargetSchemeLabel);
+            TargetSchemePanel.Location = new Point(249, 151);
+            TargetSchemePanel.Name = "TargetSchemePanel";
+            TargetSchemePanel.Size = new Size(212, 335);
+            TargetSchemePanel.TabIndex = 31;
+            // 
+            // LayerLB
+            // 
+            LayerLB.FormattingEnabled = true;
+            LayerLB.ItemHeight = 15;
+            LayerLB.Location = new Point(6, 76);
+            LayerLB.Name = "LayerLB";
+            LayerLB.Size = new Size(200, 244);
+            LayerLB.TabIndex = 14;
+            // 
+            // TargetSchemeLabel
+            // 
+            TargetSchemeLabel.AutoSize = true;
+            TargetSchemeLabel.Location = new Point(48, 0);
+            TargetSchemeLabel.Name = "TargetSchemeLabel";
+            TargetSchemeLabel.Size = new Size(122, 15);
+            TargetSchemeLabel.TabIndex = 11;
+            TargetSchemeLabel.Text = "Target Armor Scheme";
+            TargetSchemeLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Input
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(473, 444);
+            ClientSize = new Size(473, 665);
+            Controls.Add(PendepthCB);
+            Controls.Add(TargetSchemePanel);
+            Controls.Add(QSwitchCountPanel);
             Controls.Add(CommaDecimalCB);
             Controls.Add(EngineStatsPanel);
             Controls.Add(TargetDefensesPanel);
@@ -603,7 +767,6 @@ namespace LaserCalcUI
             Text = "Laser Calc";
             ((System.ComponentModel.ISupportInitialize)StackLengthUD).EndInit();
             ((System.ComponentModel.ISupportInitialize)StackCountUD).EndInit();
-            ((System.ComponentModel.ISupportInitialize)TargetResistanceUD).EndInit();
             ((System.ComponentModel.ISupportInitialize)SmokeStrengthUD).EndInit();
             ((System.ComponentModel.ISupportInitialize)PlanarSmokeUD).EndInit();
             ((System.ComponentModel.ISupportInitialize)EnginePpmUD).EndInit();
@@ -613,6 +776,7 @@ namespace LaserCalcUI
             ((System.ComponentModel.ISupportInitialize)CombinerCountUD).EndInit();
             ((System.ComponentModel.ISupportInitialize)MinRechargeUD).EndInit();
             ((System.ComponentModel.ISupportInitialize)MaxRechargeUD).EndInit();
+            ((System.ComponentModel.ISupportInitialize)QSwitchCountUD).EndInit();
             StorageTypePanel.ResumeLayout(false);
             StorageTypePanel.PerformLayout();
             LaserParametersPanel.ResumeLayout(false);
@@ -624,6 +788,10 @@ namespace LaserCalcUI
             TestParametersPanel.ResumeLayout(false);
             TestParametersPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            QSwitchCountPanel.ResumeLayout(false);
+            QSwitchCountPanel.PerformLayout();
+            TargetSchemePanel.ResumeLayout(false);
+            TargetSchemePanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -635,8 +803,7 @@ namespace LaserCalcUI
         private System.Windows.Forms.Label StackLengthLabel;
         private System.Windows.Forms.Label StackCountLabel;
         private System.Windows.Forms.NumericUpDown StackCountUD;
-        private System.Windows.Forms.Label TargetResistanceLabel;
-        private System.Windows.Forms.NumericUpDown TargetResistanceUD;
+        private System.Windows.Forms.Label ResistanceLabel;
         private System.Windows.Forms.Label SmokeStrengthLabel;
         private System.Windows.Forms.NumericUpDown SmokeStrengthUD;
         private System.Windows.Forms.NumericUpDown PlanarSmokeUD;
@@ -675,8 +842,22 @@ namespace LaserCalcUI
         private System.Windows.Forms.NumericUpDown MinRechargeUD;
         private System.Windows.Forms.Label MinRechargeLabel;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private Label label1;
+        private Label PlanarSmokeLabel;
         private CheckBox CommaDecimalCB;
+        private Panel QSwitchCountPanel;
+        private CheckBox TestQSwitchedCB;
+        private NumericUpDown QSwitchCountUD;
+        private CheckBox TestZeroQCB;
+        private Label QSwitchCountPanelLabel;
+        private Label QSwitchCountLabel;
+        private Panel TargetSchemePanel;
+        private Label TargetSchemeLabel;
+        private ComboBox ResistanceDD;
+        private CheckBox PendepthCB;
+        private ComboBox ArmorLayerDD;
+        private ListBox LayerLB;
+        private Button DeleteLayerButton;
+        private Button AddLayerButton;
     }
 }
 

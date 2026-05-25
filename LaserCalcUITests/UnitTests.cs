@@ -1,7 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LaserCalcUI;
+using System.Configuration;
 
-namespace LaserCalcTests
+namespace LaserCalcUITests
 {
     [TestClass]
     public class Tests
@@ -14,7 +15,7 @@ namespace LaserCalcTests
             bool inlineDoublers = true;
             int stackCount = 2;
             int combinerCount = 2;
-            bool usesQSwitch = false;
+            int qSwitchCount = 0;
             float targetResistance = 40;
             float smokeIntensityMultiplier = 1;
             float enginePpm = 600;
@@ -32,7 +33,7 @@ namespace LaserCalcTests
                 inlineDoublers,
                 stackCount,
                 combinerCount,
-                usesQSwitch,
+                qSwitchCount,
                 targetResistance,
                 smokeIntensityMultiplier,
                 enginePpm,
@@ -46,6 +47,13 @@ namespace LaserCalcTests
                 );
             testLaser.CalculateLaserStats();
 
+            List<Layer> testLayers = [
+                Layer.MetalBeam
+                ];
+            Scheme testScheme = new(testLayers);
+            float requiredDps = testScheme.CalculateRequiredDamageToPen(testLaser.Intensity);
+            float expectedRequiredDps = Layer.MetalBeam.HP;
+
             Assert.AreEqual(13_500, testLaser.EnergyStorage);
             Assert.AreEqual(24, testLaser.PumpVolume);
             Assert.AreEqual(288, testLaser.RechargeRate);
@@ -54,8 +62,8 @@ namespace LaserCalcTests
             Assert.AreEqual(5130.0015f, testLaser.DischargeRate);
             Assert.AreEqual(720f, testLaser.EnginePower);
             Assert.AreEqual(2, testLaser.DoublerCount);
-            Assert.AreEqual(3570, testLaser.LaserCost);
-            Assert.AreEqual(59, testLaser.LaserVolume);
+            Assert.AreEqual(4120, testLaser.LaserCost);
+            Assert.AreEqual(62, testLaser.LaserVolume);
             Assert.AreEqual(144f, testLaser.EngineCost);
             Assert.AreEqual(12f, testLaser.EngineVolume);
             Assert.AreEqual(2160f, testLaser.FuelBurned);
@@ -63,13 +71,14 @@ namespace LaserCalcTests
             Assert.AreEqual(1.44f, testLaser.FuelAccessVolume);
             Assert.AreEqual(5.76f, testLaser.FuelStorageCost);
             Assert.AreEqual(2.88f, testLaser.FuelStorageVolume);
-            Assert.AreEqual(5894.16f, testLaser.TotalCost);
-            Assert.AreEqual(75.32f, testLaser.TotalVolume);
-            Assert.AreEqual(71.83432f, testLaser.Intensity);
+            Assert.AreEqual(6444.1597f, testLaser.TotalCost);
+            Assert.AreEqual(78.32f, testLaser.TotalVolume);
+            Assert.AreEqual(83.66864f, testLaser.Intensity);
             Assert.AreEqual(testLaser.Intensity * smokeIntensityMultiplier, testLaser.EffectiveIntensity);
             Assert.AreEqual(216f, testLaser.Dps);
-            Assert.AreEqual(0.03664644f, testLaser.DpsPerCost);
-            Assert.AreEqual(2.8677642f, testLaser.DpsPerVolume);
+            Assert.AreEqual(0.033518724f, testLaser.DpsPerCost);
+            Assert.AreEqual(2.7579162f, testLaser.DpsPerVolume);
+            Assert.AreEqual(expectedRequiredDps, requiredDps);
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LaserCalcUI
+﻿namespace LaserCalcUI
 {
     /// <summary>
     /// One segment of a laser stack
@@ -63,5 +57,7 @@ namespace LaserCalcUI
             SingleInputCavityWithLargePump,
             Destabilizer
         ];
+
+        public static int DestabilizerIndex { get; } = Array.IndexOf(AllLaserComponents, Destabilizer);
     }
 }

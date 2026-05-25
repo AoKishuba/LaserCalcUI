@@ -11,7 +11,7 @@ namespace LaserCalcUI
     /// <param name="inlineDoublers">True if doublers will be included in stacks</param>
     /// <param name="stackCount">Number of parallel cavity stacks</param>
     /// <param name="combinerCount">Number of laser combiners and LAMS nodes</param>
-    /// <param name="usesQSwitch">Whether laser uses at least one Q-switch</param>
+    /// <param name="qSwitchCount">Q-switches per combiner (0-4)</param>
     /// <param name="targetResistance">Fire resistance of target block</param>
     /// <param name="smokeIntensityMultiplier">Intensity Multiplier from smoke</param>
     /// <param name="enginePpm">Engine Power Per Material</param>
@@ -28,7 +28,7 @@ namespace LaserCalcUI
         bool inlineDoublers,
         int stackCount,
         int combinerCount,
-        bool usesQSwitch,
+        int qSwitchCount,
         float targetResistance,
         float smokeIntensityMultiplier,
         float enginePpm,
@@ -42,11 +42,11 @@ namespace LaserCalcUI
             )
     {
         public int[] ComponentCounts { get; } = componentCounts;
-        public int DoublerCount { get; set; } = doublerCount;
+        public int DoublerCount { get; } = doublerCount;
         public bool InlineDoublers { get; } = inlineDoublers;
         public int StackCount { get; } = stackCount;
         public int CombinerCount { get; } = combinerCount;
-        public bool UsesQSwitch { get; } = usesQSwitch;
+        public int QSwitchCount { get; } = qSwitchCount;
         public float TargetResistance { get; } = targetResistance;
         float SmokeIntensityMultiplier { get; } = smokeIntensityMultiplier;
         public float EnginePpm { get; } = enginePpm;
@@ -58,29 +58,30 @@ namespace LaserCalcUI
         public int TestInterval { get; } = testInterval;
         char ColumnDelimiter { get; } = columnDelimiter;
 
-        public int LaserCost { get; set; }
-        public int LaserVolume { get; set; }
-        public int EnergyStorage { get; set; }
-        public int PumpVolume { get; set; }
-        public int RechargeRate { get; set; }
-        public float DischargeRate { get; set; }
-        public float RechargeTime { get; set; }
-        public float EnginePower { get; set; }
-        public float EngineCost { get; set; }
-        public float EngineVolume { get; set; }
-        public float FuelBurned { get; set; }
-        public float FuelAccessCost { get; set; }
-        public float FuelAccessVolume { get; set; }
-        public float FuelStorageCost { get; set; }
-        public float FuelStorageVolume { get; set; }
-        public float TotalCost { get; set; }
-        public float TotalVolume { get; set; }
-        public float IntensityMod { get; set; }
-        public float Intensity { get; set; }
-        public float EffectiveIntensity { get; set; }
-        public float Dps { get; set; }
-        public float DpsPerCost { get; set; }
-        public float DpsPerVolume { get; set; }
+        public int LaserCost { get; private set; }
+        public int LaserVolume { get; private set; }
+        public int EnergyStorage { get; private set; }
+        public int PumpVolume { get; private set; }
+        public int RechargeRate { get; private set; }
+        public float DischargeRate { get; private set; }
+        public float RechargeTime { get; private set; }
+        public float EnginePower { get; private set; }
+        public float EngineCost { get; private set; }
+        public float EngineVolume { get; private set; }
+        public float FuelBurned { get; private set; }
+        public float FuelAccessCost { get; private set; }
+        public float FuelAccessVolume { get; private set; }
+        public float FuelStorageCost { get; private set; }
+        public float FuelStorageVolume { get; private set; }
+        public float TotalCost { get; private set; }
+        public float TotalVolume { get; private set; }
+        public float IntensityMod { get; private set; }
+        public float Intensity { get; private set; }
+        public float EffectiveIntensity { get; private set; }
+        public float Dps { get; private set; }
+        public float DamagePerShot { get; private set; }
+        public float DpsPerCost { get; private set; }
+        public float DpsPerVolume { get; private set; }
 
         /// <summary>
         /// Calculate all stats
@@ -110,14 +111,7 @@ namespace LaserCalcUI
                 writer.WriteLine(LaserComponent.AllLaserComponents[i].Name + ColumnDelimiter  + ComponentCounts[i]);
             }
 
-            if (UsesQSwitch)
-            {
-                writer.WriteLine("1-4 Q switches");
-            }
-            else
-            {
-                writer.WriteLine("Laser does NOT use Q switches");
-            }
+            writer.WriteLine("Q-switch count" + ColumnDelimiter + QSwitchCount);
 
             if (InlineDoublers)
             {
@@ -153,6 +147,7 @@ namespace LaserCalcUI
             writer.WriteLine("Energy discharge/sec" + ColumnDelimiter + DischargeRate);
             writer.WriteLine("Base Intensity" + ColumnDelimiter + Intensity);
             writer.WriteLine("Intensity after smoke" + ColumnDelimiter + EffectiveIntensity);
+            writer.WriteLine("Damage per shot per combiner" + ColumnDelimiter + DamagePerShot);
             writer.WriteLine("Sustained damage per second" + ColumnDelimiter + Dps);
             writer.WriteLine("DPS per cost" + ColumnDelimiter + DpsPerCost);
             writer.WriteLine("DPS per volume" + ColumnDelimiter + DpsPerVolume);
@@ -163,6 +158,7 @@ namespace LaserCalcUI
         /// </summary>
         void CalculateEnergyStorage()
         {
+            EnergyStorage = 0;
             for (int compIndex = 0; compIndex < ComponentCounts.Length; compIndex++)
             {
                 EnergyStorage += LaserComponent.AllLaserComponents[compIndex].EnergyStorage * ComponentCounts[compIndex];
@@ -176,6 +172,7 @@ namespace LaserCalcUI
         /// </summary>
         void CalculatePumpVolume()
         {
+            PumpVolume = 0;
             for (int compIndex = 0; compIndex < ComponentCounts.Length; compIndex++)
             {
                 PumpVolume += LaserComponent.AllLaserComponents[compIndex].PumpVolume * ComponentCounts[compIndex];
@@ -208,17 +205,8 @@ namespace LaserCalcUI
         /// </summary>
         void CalculateDischargeRate()
         {
-            // Find destab index
-            int destabIndex = int.MaxValue;
-            for (int i = 0; i < LaserComponent.AllLaserComponents.Length; i++)
-            {
-                if (LaserComponent.AllLaserComponents[i] == LaserComponent.Destabilizer)
-                {
-                    destabIndex = i;
-                }
-            }
             // multiplier = 1 - (1 - regulator setting [default 0.1])^(#destabs + 1)
-            float dischargeMultiplier = 1f - MathF.Pow(0.9f, ComponentCounts[destabIndex] + 1f);
+            float dischargeMultiplier = 1f - MathF.Pow(0.9f, ComponentCounts[LaserComponent.DestabilizerIndex] + 1f);
 
             DischargeRate = EnergyStorage * dischargeMultiplier * CombinerCount;
         }
@@ -234,10 +222,12 @@ namespace LaserCalcUI
                 LaserCost += LaserComponent.AllLaserComponents[compIndex].Cost * ComponentCounts[compIndex];
             }
             LaserCost *= StackCount;
+            int doublerCount = InlineDoublers ? DoublerCount * StackCount : DoublerCount;
             LaserCost += 
-                50 // Multipurpose laser
+                100 // Multipurpose laser + Regulator
                 + 40 * StackCount // Laser coupler
-                + DoublerCount * 250;
+                + 50 * QSwitchCount * StackCount
+                + doublerCount * 250;
         }
 
         /// <summary>
@@ -251,10 +241,12 @@ namespace LaserCalcUI
                 LaserVolume += LaserComponent.AllLaserComponents[compIndex].BlockVolume * ComponentCounts[compIndex];
             }
             LaserVolume *= StackCount;
+            int doublerCount = InlineDoublers ? DoublerCount * StackCount : DoublerCount;
             LaserVolume +=
-                1 // Multipurpose laser
+                2 // Multipurpose laser + Regulator
                 + StackCount // Laser coupler
-                + DoublerCount;
+                + QSwitchCount * StackCount
+                + doublerCount;
         }
 
 
@@ -301,12 +293,12 @@ namespace LaserCalcUI
         void CalculateDps()
         {
             int totalDoublerCount = InlineDoublers
-                ? DoublerCount
-                : DoublerCount * StackCount;
+                ? DoublerCount * StackCount
+                : DoublerCount;
 
-            Intensity = UsesQSwitch
-                ? 40f + totalDoublerCount / IntensityMod * 100f
-                : 60f + totalDoublerCount / IntensityMod * 150f;
+            Intensity = QSwitchCount == 0
+                ? 60f + totalDoublerCount / IntensityMod * 150f
+                : 40f + totalDoublerCount / IntensityMod * 100f;
 
             EffectiveIntensity = Intensity * SmokeIntensityMultiplier;
 
@@ -315,10 +307,20 @@ namespace LaserCalcUI
                 ? outputRate
                 : outputRate * EffectiveIntensity / TargetResistance;
 
-            if (!UsesQSwitch)
+            if (QSwitchCount == 0)
             {
                 Dps *= 0.75f;
             }
+
+            DamagePerShot = QSwitchCount switch
+            {
+                1 => Dps,
+                2 => Dps / 2f,
+                3 => Dps / 4f,
+                4 => Dps / 8f,
+                _ => Dps / 40f
+            };
+            DamagePerShot /= CombinerCount;
 
             TotalCost = LaserCost + EngineCost + FuelAccessCost + FuelStorageCost + FuelBurned;
             TotalVolume = LaserVolume + EngineVolume + FuelAccessVolume + FuelStorageVolume;
