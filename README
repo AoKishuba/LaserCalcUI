@@ -15,7 +15,7 @@ NOTE: Results for each test will be written to a .csv file in the LaserCalcUI
 folder. Filenames are automatically generated from current time. An example
 filename is "2021-07-04_09-12-11-12".
 
-Stack Length: Max number of laser components in a row.
+Stack Length: Max number of laser components in a row, excluding connectors.
 
 Stack Count: Number of parallel rows of laser components.
 
@@ -29,6 +29,10 @@ Min/Max Recharge Time: Min/max allowed time to charge from empty to full.
 
 Storage Type: Select the type of storage on the craft. Used for storing
 materials burned as fuel.
+
+Q-Switches: At least one checkbox must be checked. Selected values are 
+used to calculate Intensity and Damage Per Shot; the latter is used for
+pendepth testing (see below).
 
 Engine PPM: Engine Power Per Material, as shown ingame
 
@@ -47,19 +51,28 @@ smoke dispenser = 25,000 smoke strength.
 
 Planar Smoke Equivalent: Planar Shield Smoke equivalent, as shown ingame.
 
+Require Pendepth: Check to enable Target Armor Scheme panel and to filter
+lasers to include only those which can penetrate the given armor
+configuration in a single hit. 0Q lasers cannot be filtered in this way.
+
+Comma Decimal Separator: Select if your computer's region uses a comma
+to separate the ones place from the tenths place (e.g., 1/10 = "0,1").
+Used for formatting .csv output.
+
 Test for cost/volume: Whether to compare damage per total system cost or 
 volume. Includes laser components, materials burned as fuel, storage, fuel
 access, and engine.
 
+Test Interval: Used for calculating fuel storage costs.
+
 ---- OPTIMIZER OUTPUT ----
 The optimizer output always begins with the test parameters entered by the 
-user at runtime. Below that are the top two lasers: one without Q-switches 
-and one with.
+user at runtime. Top laser(s), if any were found, will be listed below.
 
 Component counts: Shows the number of each type of laser component.
 
 Laser cost: Total cost of all laser components. Includes components listed
-above, Multipurpose laser, and one Laser coupler per stack.
+above, Multipurpose laser, Laser regulator, and one Laser coupler per stack.
 
 Engine cost: Total cost of engine blocks.
 
@@ -85,7 +98,10 @@ Energy discharge/sec: Laser energy released per second. Assumes regulator.
 
 Base Intensity: Intensity rating of laser.
 
-intensity after smoke: Effective Intensity after applying smoke penalty.
+Intensity after smoke: Effective Intensity after applying smoke penalty.
+
+Damage per shot per combiner: 10% of laser energy storage per shot
+(unregulated lasers are not supported by optimizer).
 
 Sustained damage per second: Laser damage per second. Uses discharge rate or 
 recharge rate, whichever is lower.
